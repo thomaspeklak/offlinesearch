@@ -35,17 +35,20 @@ class Crawler
           title=xml_tag(xml,'title')
           h1=xml_tag(xml,'h1')
           h2=xml_tag(xml,'h2')
+          a=xml_tag(xml,'a')
         rescue REXML::ParseException
           # no valid xhtml
           # try to retrieve as much information as possible
           title=text_tag(lines,'title')          
           h1=text_tag(lines,'h1')
           h2=text_tag(lines,'h2')
+          a=text_tag(lines,'a')
         end
         puts file
         print_var(title,2)
-        print_var(h1,5)
-        print_var(h2,10)
+        print_var(h1,7)
+        print_var(h2,15)
+        print_var(a,25)
       end
     end
   end
@@ -57,7 +60,7 @@ class Crawler
     end
   end
   
-  ###### private functions
+  ###### HELPER METHODS
   private
   
   def strip_tags(text)
