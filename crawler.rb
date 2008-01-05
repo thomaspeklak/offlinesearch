@@ -43,9 +43,9 @@ class Crawler
           h2=text_tag(lines,'h2')
         end
         puts file
-        title.each  { |t|  puts "   #{t}"}      unless title.nil?
-        h1.each     { |h|  puts "     #{h}"}    unless h1.nil?
-        h2.each     { |h|  puts "       #{h}"}  unless h2.nil?
+        print_var(title,2)
+        print_var(h1,5)
+        print_var(h2,10)
       end
     end
   end
@@ -68,6 +68,9 @@ class Crawler
   end
   def text_tag(text,tag)
      strip_tags(tag_content(text,tag))
+  end
+  def print_var(var,indent)
+    var.each  { |v|  puts " "*indent+"#{v}"}      unless var.nil?
   end
 end
 
