@@ -1,4 +1,6 @@
-# find files in dir
+# CRAWLER
+# searches dirctory for files
+# parses files for keywords and pagerank
 
 require 'find'
 require 'rexml/document'
