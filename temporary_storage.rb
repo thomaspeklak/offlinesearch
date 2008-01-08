@@ -3,7 +3,7 @@
 # options
 #   datebase
 #     sqlite, mysql
-#
+#   filesystem
 
 class Temporary_Storage
   attr_reader :storage_handler
