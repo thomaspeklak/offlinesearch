@@ -1,0 +1,8 @@
+language: english
+storage: sqlite
+crawler:
+  docpath: /Users/tom/Documents/sabine/sabineirawan.com
+  docs: [html, htm]
+  excepotions:
+
+  

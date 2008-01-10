@@ -10,17 +10,26 @@ class Temporary_Storage
   def initialize(mode)
     @storage_handler=case
       when mode=='sqlite': Sqlite.new('storage.db')
+      else
+        puts "no appropriate stroage is selected\nvalid options:\n\tsqlite"
+        exit
     end
   end
+
   #start pagerank with 1 to enable mutliplicatoin pagerank
   def store_file(filename,title,pagerank=1)
     @storage_handler.store_file(filename,title,pagerank)
   end
+
   def get_file(filename)
     f=@storage_handler.get_file(filename)
     { 'filename'=>f[0],
       'titel'=>f[1],
       'pagerank'=>f[2] }
+  end
+  
+  def get_files
+    f=@storage_handler.get_files
   end
   
   private
@@ -41,14 +50,13 @@ class Temporary_Storage
     def store_file(filename, title, pagerank)
       @db.execute( "insert into files values ( ?, ?, ? )", filename, title, pagerank)
     end
+    
     def get_file(filename)
-      @db.get_first_row( "select * from files where filename = ?", filename)
+      @db.get_first_row("select * from files where filename = ?", filename)
+    end
+
+    def get_files
+      @db.execute("select * from files")
     end
   end
 end
-
-t=Temporary_Storage.new('sqlite')
-t.store_file('test.html','Test',20)
-r=t.get_file('test.html')
-puts r.inspect
-

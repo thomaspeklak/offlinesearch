@@ -6,22 +6,29 @@ require 'find'
 require 'rexml/document'
 
 class Crawler
-  def initialize(resource)
-    @resource = resource
-  end
-  attr_reader :resource
   attr_writer :resource
-  def find_files(filter)
+
+  def initialize
+    @resource = $config['crawler']['docpath']
+    require "temporary_storage"
+    @storage=Temporary_Storage.new($config['storage'])
+  end
+
+  def find_files()
+    filter=$config['crawler']['docs']
+    test=''
+    filter.each { |fi|  test+=".*#{fi}|"}
     @files = Array.new()
     Find.find(@resource) do |f|
       if FileTest.file?f
-        if File.basename(f) =~ /#{filter}/i
+        if File.basename(f) =~ /(#{test[0..-2]})$/i
           @files.push(f)
         end
       end
     end
     @files
   end
+
   def parse_files
     @files.each do |file|
       lines=''
@@ -44,14 +51,22 @@ class Crawler
           h2=text_tag(lines,'h2')
           a=text_tag(lines,'a')
         end
-        puts file
-        print_var(title,2)
-        print_var(h1,7)
-        print_var(h2,15)
-        print_var(a,25)
+        @storage.store_file(file,title)
+#        print_var(title,2)
+#        print_var(h1,7)
+#        print_var(h2,15)
+#        print_var(a,25)
       end
     end
   end
+
+  def get_stored_files
+    s=@storage.get_files
+    puts s.inspect
+  end
+  ###### HELPER METHODS
+  private
+  
   def tag_content(text,tag)
     if text =~ /<#{tag}[^>]*>(.*)<\/#{tag}>/i
       strip_tags($1)
@@ -59,25 +74,20 @@ class Crawler
       nil
     end
   end
-  
-  ###### HELPER METHODS
-  private
-  
+
   def strip_tags(text)
     text.gsub(/<[^>]*>/,'') unless text.nil?
   end
+
   def xml_tag(xml,tag)
     xml.elements.each("//#{tag}//text()") 
   end
+
   def text_tag(text,tag)
      strip_tags(tag_content(text,tag))
   end
+
   def print_var(var,indent)
     var.each  { |v|  puts " "*indent+"#{v}"}      unless var.nil?
-  end
+  end  
 end
-
-
-t=Crawler.new('/Users/tom/Documents/sabine/sabineirawan.com')
-t.find_files('\.html$')
-t.parse_files
