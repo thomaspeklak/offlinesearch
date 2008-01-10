@@ -52,6 +52,7 @@ class Crawler
           a=text_tag(lines,'a')
         end
         @storage.store_file(file,title)
+        @storage.store_term(h1,7)
 #        print_var(title,2)
 #        print_var(h1,7)
 #        print_var(h2,15)
