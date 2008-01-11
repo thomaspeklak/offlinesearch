@@ -4,6 +4,11 @@
 #   datebase
 #     sqlite, mysql
 #   filesystem
+/*
+ * $Author$
+ * $Rev$
+ * $LastREvisionDate$
+ */
 
 class Temporary_Storage
   attr_reader :storage_handler

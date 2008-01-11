@@ -1,3 +1,9 @@
+/*
+ * $Author$
+ * $Rev$
+ * $LastREvisionDate$
+ */
+
 require "YAML"
 require "crawler"
 

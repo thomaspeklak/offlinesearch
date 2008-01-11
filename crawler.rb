@@ -1,6 +1,11 @@
 # CRAWLER
 # searches dirctory for files
 # parses files for keywords and pagerank
+/*
+ * $Author$
+ * $Rev$
+ * $LastREvisionDate$
+ */
 
 require 'find'
 require 'rexml/document'
