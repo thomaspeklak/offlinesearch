@@ -61,6 +61,10 @@ class Temporary_Storage
           term_id integer not null,
           rank integer not null
         );
+        create table links(
+          link varchar2(255) not null,
+          links_number integer
+        )
         "
       @db.execute_batch(sql)
     end

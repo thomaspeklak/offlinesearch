@@ -43,6 +43,12 @@ class Crawler
           h1=xml_tag(xml,'h1')
           h2=xml_tag(xml,'h2')
           a=xml_tag(xml,'a')
+          href= Array.new
+          a.each do |anker|
+            link=anker.parent.attributes.get_attribute('href').value
+            #TODO edit link to relative from baspath
+            href.push(link) unless link.nil?
+          end
         rescue REXML::ParseException
           # no valid xhtml
           # try to retrieve as much information as possible
@@ -53,8 +59,7 @@ class Crawler
         end
         @storage.store_file(file,title)
         @storage.store_term(h1,7)
-#        print_var(title,2)
-#        print_var(h1,7)
+#        @storage.store_links(href)
 #        print_var(h2,15)
 #        print_var(a,25)
       end
