@@ -7,7 +7,7 @@
 /*
  * $Author$
  * $Rev$
- * $LastREvisionDate$
+ * $LastChangedDate$
  */
 
 class Temporary_Storage

@@ -1,7 +1,7 @@
 /*
  * $Author$
  * $Rev$
- * $LastREvisionDate$
+ * $LastChangedDate$
  */
 
 require "YAML"

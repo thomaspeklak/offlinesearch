@@ -4,7 +4,7 @@
 /*
  * $Author$
  * $Rev$
- * $LastREvisionDate$
+ * $LastChangedDate$
  */
 
 require 'find'
