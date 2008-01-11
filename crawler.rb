@@ -47,7 +47,7 @@ class Crawler
           a.each do |anker|
             link=anker.parent.attributes.get_attribute('href').value
             #TODO edit link to relative from baspath
-            href.push(link) unless link.nil?
+            href.push(resolve_link(link, File.dirname(file))) unless link.nil?
           end
         rescue REXML::ParseException
           # no valid xhtml
@@ -57,9 +57,10 @@ class Crawler
           h2=text_tag(lines,'h2')
           a=text_tag(lines,'a')
         end
-        @storage.store_file(file,title)
-        @storage.store_term(h1,7)
-#        @storage.store_links(href)
+        
+#        @storage.store_file(file,title)
+#        @storage.store_term(h1,7)
+        @storage.store_links(href) unless href.nil?
 #        print_var(h2,15)
 #        print_var(a,25)
       end
@@ -96,4 +97,17 @@ class Crawler
   def print_var(var,indent)
     var.each  { |v|  puts " "*indent+"#{v}"}      unless var.nil?
   end  
+  
+  def resolve_link(link,dir)
+    case 
+      when link =~ /^(http|ftp)/
+        return nil
+      when link =~ /^[\/a-zA-Z0-9_-]/
+        return dir+'/'+link
+      when link =~ /^\./
+        return File.expand_path(dir+'/'+link)
+      else
+        return nil
+    end
+  end
 end

@@ -25,6 +25,10 @@ class Temporary_Storage
     @storage_handler.store_term(term,rank)
   end
 
+  def store_link(link)
+    @storage_handler.store_link(link)
+  end
+
   def get_file(filename)
     f=@storage_handler.get_file(filename)
     { 'filename'=>f[0],
@@ -79,6 +83,10 @@ class Temporary_Storage
         term_id=@db.last_insert_row_id()
       end
       @db.execute("insert into files_terms values (?,?,?)", @current_file_id,term_id,rank)
+    end
+    
+    def store_link(link)
+      #TODO links storage
     end
     
     def get_file(filename)
