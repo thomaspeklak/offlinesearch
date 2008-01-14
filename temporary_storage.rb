@@ -58,6 +58,11 @@ class Temporary_Storage
       @db = SQLite3::Database.new(db)
       @db.type_translation = true
       sql = "
+        drop table if exists files;
+        drop terms if exists;
+        drop files_terms if exists;
+        drop links if exists;
+        
         create table files ( 
           id integer not null primary key autoincrement,
           filename varchar2(255), 
