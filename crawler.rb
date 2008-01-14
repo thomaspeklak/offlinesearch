@@ -55,9 +55,9 @@ class Crawler
         rescue REXML::ParseException
           # no valid xhtml
           # try to retrieve as much information as possible
-          title=text_tag(lines,'title')          
-          h1=text_tag(lines,'h1')
-          h2=text_tag(lines,'h2')
+          #title=text_tag(lines,'title')          
+          #h1=text_tag(lines,'h1')
+          #h2=text_tag(lines,'h2')
           a=text_tag(lines,'a')
         end
         
@@ -72,15 +72,17 @@ class Crawler
 
   def get_stored_files
     s=@storage.get_files
-    puts s.inspect
-    puts @storage.get_links.inspect
+    #puts s.inspect
+    #puts @storage.get_links.inspect
   end
   ###### HELPER METHODS
   private
   
   def tag_content(text,tag)
-    if text =~ /<#{tag}[^>]*>(.*)<\/#{tag}>/i
-      strip_tags($1)
+    #TODO not greedy regular expression
+    if m = text.scan(/<#{tag}[^>]*>.*?<\/#{tag}>/i)
+      puts m.inspect
+      strip_tags('')
     else
       nil
     end
