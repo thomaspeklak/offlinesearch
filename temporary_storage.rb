@@ -4,11 +4,10 @@
 #   datebase
 #     sqlite, mysql
 #   filesystem
-/*
- * $Author$
- * $Rev$
- * $LastChangedDate$
- */
+#
+# * $Author$
+# * $Rev$
+# * $LastChangedDate$
 
 class Temporary_Storage
   attr_reader :storage_handler
@@ -30,8 +29,8 @@ class Temporary_Storage
     @storage_handler.store_term(term,rank)
   end
 
-  def store_link(link)
-    @storage_handler.store_link(link)
+  def store_link(links)
+    @storage_handler.store_link(links)
   end
 
   def get_file(filename)
@@ -43,6 +42,10 @@ class Temporary_Storage
   
   def get_files
     f=@storage_handler.get_files
+  end
+  
+  def get_links()
+    @storage_handler.get_links()
   end
   
   private
@@ -72,7 +75,7 @@ class Temporary_Storage
         );
         create table links(
           link varchar2(255) not null,
-          links_number integer
+          links_in integer
         )
         "
       @db.execute_batch(sql)
@@ -90,8 +93,14 @@ class Temporary_Storage
       @db.execute("insert into files_terms values (?,?,?)", @current_file_id,term_id,rank)
     end
     
-    def store_link(link)
-      #TODO links storage
+    def store_link(links)
+      links.each do |link|
+        if(links_in  = @db.get_first_value("select links_in from links where link = ?",link))
+          @db.execute("update links set links_in =? where link = ? ",links_in+1,link)
+        else
+          @db.execute("insert into links values (?,?)", link, 1)
+        end
+      end
     end
     
     def get_file(filename)
@@ -100,6 +109,10 @@ class Temporary_Storage
 
     def get_files
       @db.execute("select * from files")
+    end
+    
+    def get_links
+      @db.execute("select * from links")
     end
   end
 end

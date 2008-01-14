@@ -1,11 +1,10 @@
 # CRAWLER
 # searches dirctory for files
 # parses files for keywords and pagerank
-/*
- * $Author$
- * $Rev$
- * $LastChangedDate$
- */
+#
+# * $Author$
+# * $Rev$
+# * $LastChangedDate$
 
 require 'find'
 require 'rexml/document'
@@ -50,9 +49,8 @@ class Crawler
           a=xml_tag(xml,'a')
           href= Array.new
           a.each do |anker|
-            link=anker.parent.attributes.get_attribute('href').value
-            #TODO edit link to relative from baspath
-            href.push(resolve_link(link, File.dirname(file))) unless link.nil?
+            link=resolve_link(anker.parent.attributes.get_attribute('href').value,File.dirname(file))
+            href.push(link) unless link.nil?
           end
         rescue REXML::ParseException
           # no valid xhtml
@@ -65,7 +63,7 @@ class Crawler
         
 #        @storage.store_file(file,title)
 #        @storage.store_term(h1,7)
-        @storage.store_links(href) unless href.nil?
+        @storage.store_link(href) unless href.nil?
 #        print_var(h2,15)
 #        print_var(a,25)
       end
@@ -75,6 +73,7 @@ class Crawler
   def get_stored_files
     s=@storage.get_files
     puts s.inspect
+    puts @storage.get_links.inspect
   end
   ###### HELPER METHODS
   private
@@ -105,7 +104,7 @@ class Crawler
   
   def resolve_link(link,dir)
     case 
-      when link =~ /^(http|ftp)/
+      when link =~ /^(http|ftp|mailto)/
         return nil
       when link =~ /^[\/a-zA-Z0-9_-]/
         return dir+'/'+link

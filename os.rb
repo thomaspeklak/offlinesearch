@@ -1,8 +1,8 @@
-/*
- * $Author$
- * $Rev$
- * $LastChangedDate$
- */
+#
+# * $Author$
+# * $Rev$
+# * $LastChangedDate$
+#
 
 require "YAML"
 require "crawler"
