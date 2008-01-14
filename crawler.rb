@@ -50,30 +50,33 @@ class Crawler
           href= Array.new
           a.each do |anker|
             link=resolve_link(anker.parent.attributes.get_attribute('href').value,File.dirname(file))
-            href.push(link) unless link.nil?
+            href << link unless link.nil?
           end
         rescue REXML::ParseException
           # no valid xhtml
           # try to retrieve as much information as possible
-          #title=text_tag(lines,'title')          
+          title=text_tag(lines,'title')          
           #h1=text_tag(lines,'h1')
           #h2=text_tag(lines,'h2')
-          a=text_tag(lines,'a')
+          a = Array.new
+          href = Array.new
+          a_href_and_content(lines).each do |links|
+            href << resolve_link(links[0],File.dirname(file))
+            a << links[1]
+          end
         end
         
-#        @storage.store_file(file,title)
+        @storage.store_file(file,title)
 #        @storage.store_term(h1,7)
         @storage.store_link(href) unless href.nil?
-#        print_var(h2,15)
-#        print_var(a,25)
       end
     end
   end
 
   def get_stored_files
     s=@storage.get_files
-    #puts s.inspect
-    #puts @storage.get_links.inspect
+    puts s.inspect
+    puts @storage.get_links.inspect
   end
   ###### HELPER METHODS
   private
@@ -81,15 +84,20 @@ class Crawler
   def tag_content(text,tag)
     #TODO not greedy regular expression
     if m = text.scan(/<#{tag}[^>]*>.*?<\/#{tag}>/i)
-      puts m.inspect
-      strip_tags('')
+      strip_tags(m)
     else
       nil
     end
   end
 
-  def strip_tags(text)
-    text.gsub(/<[^>]*>/,'') unless text.nil?
+  def a_href_and_content(text)
+    m = text.scan(/<a href=["'](.*?)["'][^>]*>(.*?)<\/a>/i)
+  end
+
+  def strip_tags(matches)
+    result = Array.new
+    matches.each { |t| result << t.gsub(/<[^>]*>/,'') unless t.nil? }
+    result
   end
 
   def xml_tag(xml,tag)
