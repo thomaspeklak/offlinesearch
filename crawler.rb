@@ -52,13 +52,13 @@ class Crawler
           #h2=text_tag(lines,'h2')
           a = Array.new
           href = Array.new
-          a_href_and_content(lines).each do |links|
-            href << resolve_link(links[0],File.dirname(file))
-            a << links[1]
-          end
-          @storage.store_file(file,title)
-          @storage.store_term(h1,7)
-          @storage.store_link(href) unless href.nil?
+          #a_href_and_content(lines).each do |links|
+          #  href << resolve_link(links[0],File.dirname(file))
+          #  a << links[1]
+          #end
+          #@storage.store_file(file,title)
+          #@storage.store_term(h1,7)
+          #@storage.store_link(href) unless href.nil?
         end
         
       end
@@ -130,16 +130,36 @@ class Crawler
     def crawler_and_store
       title=xml_tag(@xml,'//head/title')
       @storage.store_file(@file,title)
-      
-      a=xml_tag(xml,'a')
-      href= Array.new
-      a.each do |anker|
-        link=resolve_link(anker.parent.attributes.get_attribute('href').value,File.dirname(file))
-        href << link unless link.nil?
+      @storage.store_link(get_hrefs)
+    end
+    
+    private
+    
+    #SHOULD BE INHERITED
+    def reolve_link(link,dir)
+      case 
+        when link =~ /^(http|ftp|mailto)/
+          return nil
+        when link =~ /^[\/a-zA-Z0-9_-]/
+          return dir+'/'+link
+        when link =~ /^\./
+          return File.expand_path(dir+'/'+link)
+        else
+          return nil
       end
     end
+    
     def xml_tag(xml,tag)
       xml.elements.each("//#{tag}//text()") 
+    end
+    def get_hrefs
+      a=@xml.elements.to_a("//a")
+      href= Array.new
+      a.each do |anker|
+        link=resolve_link(anker.attributes.get_attribute('href').value,File.dirname(@file))
+        href << link unless link.nil?
+      end
+      href
     end
   end
 end
