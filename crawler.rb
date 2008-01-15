@@ -42,16 +42,8 @@ class Crawler
         end
         begin
           #try to parse the html as xml
-          xml = REXML::Document.new(lines)
-          title=xml_tag(xml,'title')
-          h1=xml_tag(xml,'h1')
-          h2=xml_tag(xml,'h2')
-          a=xml_tag(xml,'a')
-          href= Array.new
-          a.each do |anker|
-            link=resolve_link(anker.parent.attributes.get_attribute('href').value,File.dirname(file))
-            href << link unless link.nil?
-          end
+          doc = XmlCrawler.new(lines,file,@storage)
+          doc.crawler_and_store
         rescue REXML::ParseException
           # no valid xhtml
           # try to retrieve as much information as possible
@@ -64,11 +56,11 @@ class Crawler
             href << resolve_link(links[0],File.dirname(file))
             a << links[1]
           end
+          @storage.store_file(file,title)
+          @storage.store_term(h1,7)
+          @storage.store_link(href) unless href.nil?
         end
         
-        @storage.store_file(file,title)
-#        @storage.store_term(h1,7)
-        @storage.store_link(href) unless href.nil?
       end
     end
   end
@@ -100,9 +92,6 @@ class Crawler
     result
   end
 
-  def xml_tag(xml,tag)
-    xml.elements.each("//#{tag}//text()") 
-  end
 
   def text_tag(text,tag)
      strip_tags(tag_content(text,tag))
@@ -112,16 +101,45 @@ class Crawler
     var.each  { |v|  puts " "*indent+"#{v}"}      unless var.nil?
   end  
   
-  def resolve_link(link,dir)
-    case 
-      when link =~ /^(http|ftp|mailto)/
-        return nil
-      when link =~ /^[\/a-zA-Z0-9_-]/
-        return dir+'/'+link
-      when link =~ /^\./
-        return File.expand_path(dir+'/'+link)
-      else
-        return nil
+  class DocCrawler
+    def resolve_link(link,dir)
+      case 
+        when link =~ /^(http|ftp|mailto)/
+          return nil
+        when link =~ /^[\/a-zA-Z0-9_-]/
+          return dir+'/'+link
+        when link =~ /^\./
+          return File.expand_path(dir+'/'+link)
+        else
+          return nil
+      end
+    end
+  end
+  
+  class XmlCrawler < DocCrawler
+    def initialize(lines,file,storage)
+      puts file
+      @file = file
+      @storage = storage
+      begin
+        @xml = REXML::Document.new(lines)
+      rescue REXML::ParseException
+        raise
+      end
+    end
+    def crawler_and_store
+      title=xml_tag(@xml,'//head/title')
+      @storage.store_file(@file,title)
+      
+      a=xml_tag(xml,'a')
+      href= Array.new
+      a.each do |anker|
+        link=resolve_link(anker.parent.attributes.get_attribute('href').value,File.dirname(file))
+        href << link unless link.nil?
+      end
+    end
+    def xml_tag(xml,tag)
+      xml.elements.each("//#{tag}//text()") 
     end
   end
 end

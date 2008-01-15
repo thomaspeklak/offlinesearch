@@ -55,21 +55,20 @@ class Temporary_Storage
       require 'rubygems'
       require 'sqlite3'
       @current_file_id = nil
+      begin
+        File.delete(db)
+      rescue
+      end
       @db = SQLite3::Database.new(db)
       @db.type_translation = true
-      sql = "
-        drop table if exists files;
-        drop terms if exists;
-        drop files_terms if exists;
-        drop links if exists;
-        
-        create table files ( 
+      sql = "        
+        create table files( 
           id integer not null primary key autoincrement,
           filename varchar2(255), 
           title varchar2(255), 
           pagerank integer
         );
-        create table terms (
+        create table terms(
           id integer not null primary key autoincrement,
           term varchar2(255) unique not null
         );
