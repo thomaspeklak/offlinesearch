@@ -78,7 +78,7 @@ class Temporary_Storage
           rank integer not null
         );
         create table links(
-          link varchar2(255) not null,
+          link varchar2(255) not null primary key,
           links_in integer
         )
         "

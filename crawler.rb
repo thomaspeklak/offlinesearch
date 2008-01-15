@@ -128,30 +128,26 @@ class Crawler
       end
     end
     def crawler_and_store
-      title=xml_tag(@xml,'//head/title')
-      @storage.store_file(@file,title)
+      @storage.store_file(@file,get_title)
       @storage.store_link(get_hrefs)
+      split_and_store(get_texts)
+      exit
     end
     
     private
     
-    #SHOULD BE INHERITED
-    def reolve_link(link,dir)
-      case 
-        when link =~ /^(http|ftp|mailto)/
-          return nil
-        when link =~ /^[\/a-zA-Z0-9_-]/
-          return dir+'/'+link
-        when link =~ /^\./
-          return File.expand_path(dir+'/'+link)
-        else
-          return nil
-      end
+    def get_title
+      @xml.elements.to_a('//head/title/text()')
     end
     
-    def xml_tag(xml,tag)
-      xml.elements.each("//#{tag}//text()") 
+    def get_texts
+      @xml.elements.each("//body//text()") 
     end
+    
+    def split_and_store(texts)
+      puts texts[0..5]
+    end
+    
     def get_hrefs
       a=@xml.elements.to_a("//a")
       href= Array.new
