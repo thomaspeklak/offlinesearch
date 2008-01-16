@@ -116,6 +116,7 @@ class Crawler
     end
   end
   
+  # This class parses a file and tries to extract semantic information
   class XmlCrawler < DocCrawler
     def initialize(lines,file,storage)
       puts file
@@ -130,8 +131,7 @@ class Crawler
     def crawler_and_store
       @storage.store_file(@file,get_title)
       @storage.store_link(get_hrefs)
-      split_and_store(get_texts)
-      exit
+      split_and_store
     end
     
     private
@@ -141,11 +141,17 @@ class Crawler
     end
     
     def get_texts
-      @xml.elements.each("//body//text()") 
+      texts=@xml.elements.each("//body//text()")
+      texts.delete_if { |t| t.to_s.lstrip.empty?}
+      if block_given?
+        yield texts
+      else
+        texts
+      end
     end
     
-    def split_and_store(texts)
-      puts texts[0..5]
+    def split_and_store()
+      get_texts.each { |t| puts t  }
     end
     
     def get_hrefs
