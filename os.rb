@@ -7,7 +7,7 @@
 require "YAML"
 require "crawler"
 
-$config = YAML.load(File.open("config.yaml"))
+$config = YAML.load_file("config.yaml")
 
 crawler=Crawler.new
 

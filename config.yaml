@@ -3,6 +3,19 @@ storage: sqlite
 crawler:
   docpath: /Users/tom/Documents/sabine/sabineirawan.com
   docs: [html, htm]
-  exceptions:
+  exceptions: nil
+  tags:
+    h1: 20
+    h2: 15
+    h3: 11
+    h4: 9
+    h5: 8
+    h6: 7
+    strong: 7
+    b: 7
+    em: 5
+    i: 5
+    dt: 9
+    u: 3
+    a: 6
 
-  

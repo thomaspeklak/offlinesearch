@@ -151,7 +151,10 @@ class Crawler
     end
     
     def split_and_store()
-      get_texts.each { |t| puts t  }
+      get_texts.each do |t|
+        rank=t.semantic_value.inspect
+        puts rank + t.to_s.strip
+      end
     end
     
     def get_hrefs
@@ -162,6 +165,21 @@ class Crawler
         href << link unless link.nil?
       end
       href
+    end
+    class REXML::Text
+      def self.store_semantics(tags)
+        @@semantic_tags=tags
+      end
+      def semantic_value
+        REXML::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
+        rank = 1
+        node = parent
+        while @@semantic_tags.include?(node.name)
+          rank += $config['crawler']['tags'][node.name]
+          node = node.parent
+        end
+        rank
+      end
     end
   end
 end
