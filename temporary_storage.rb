@@ -14,8 +14,9 @@ class Temporary_Storage
   def initialize(mode)
     @storage_handler=case
       when mode=='sqlite': Sqlite.new('storage.db')
+      when mode=='memory': Memory.new
       else
-        puts "no appropriate stroage is selected\nvalid options:\n\tsqlite"
+        puts "no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory"
         exit
     end
   end
@@ -44,11 +45,88 @@ class Temporary_Storage
     f=@storage_handler.get_files
   end
   
-  def get_links()
-    @storage_handler.get_links()
+  def get_links
+    @storage_handler.get_links
+  end
+  
+  def get_terms
+    @storage_handler.get_terms
   end
   
   private
+  
+  class Memory
+    def initialize
+      @files = Array.new
+      @terms = Terms.new
+      @current_doc = nil
+    end
+    
+    def store_file(filename,title,pagerank=1)
+      @files << @current_document = Document.new(filename, title, pagerank)
+    end
+    
+    def store_term(term,rank)
+      @terms.store(term, Term2Document.new(@current_document,rank))
+    end
+    
+    def store_link(links)
+      
+    end
+    
+    def get_file(filename)
+      
+    end
+    
+    def get_files
+      @files
+    end
+    
+    def get_terms
+      @terms.get_all
+    end
+    
+    def get_links
+      
+    end
+    
+    private
+    
+    class Document
+      attr_accessor :name, :title, :page_rank
+      def initialize(name,title,page_rank)
+        @name = name
+        @title = title
+        @page_rank = page_rank
+      end
+    end
+    
+    class Terms
+      def initialize
+        @Terms = Hash.new
+      end
+      
+      def store(term,term2document)
+        @Terms.has_key?(term) ? @Terms[term] << term2document : @Terms[term]=[term2document]
+      end
+      
+      def get_one(term)
+        @Terms[term]
+      end
+      
+      def get_all
+        @Terms
+      end
+    end
+    
+    class Term2Document
+      attr_accessor :documents, :rank
+      def initialize(document, rank)
+        @document = document
+        @rank = rank
+      end
+    end
+  end
   
   class Sqlite
     def initialize(db)
@@ -112,7 +190,7 @@ class Temporary_Storage
     end
 
     def get_files
-      @db.execute("select * from files")
+      @db.execute("select * from files f join files_term ft on f.id = ft.id")
     end
     
     def get_links

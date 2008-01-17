@@ -66,9 +66,9 @@ class Crawler
   end
 
   def get_stored_files
-    s=@storage.get_files
-    puts s.inspect
+    puts @storage.get_files.inspect
     puts @storage.get_links.inspect
+    puts @storage.get_terms.keys
   end
   ###### HELPER METHODS
   private
@@ -137,7 +137,7 @@ class Crawler
     private
     
     def get_title
-      @xml.elements.to_a('//head/title/text()')
+      @xml.elements.each('//head//title/text()')
     end
     
     def get_texts
@@ -151,9 +151,12 @@ class Crawler
     end
     
     def split_and_store()
-      get_texts.each do |t|
-        rank=t.semantic_value.inspect
-        puts rank + t.to_s.strip
+      get_texts.each do |text_block|
+        rank=text_block.semantic_value.inspect
+        text_block.to_s.split.each do |term|
+          #TODO unescape HTML entities
+          @storage.store_term(term,rank)
+        end
       end
     end
     

@@ -1,5 +1,5 @@
 language: english
-storage: sqlite
+storage: memory
 crawler:
   docpath: /Users/tom/Documents/sabine/sabineirawan.com
   docs: [html, htm]
