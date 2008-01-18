@@ -97,7 +97,7 @@ class Temporary_Storage
     
     def calculate_pageranks_from_links
       @links.get_all.each do |link, rank|
-        @files[link] = rank if @files.has_key?(link)
+        @files[link].page_rank=rank if @files.has_key?(link)
       end
     end
     
