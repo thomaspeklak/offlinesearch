@@ -53,17 +53,22 @@ class Temporary_Storage
     @storage_handler.get_terms
   end
   
+  def calculate_pageranks_from_links
+    @storage_handler.calculate_pageranks_from_links
+  end
+  
   private
   
   class Memory
     def initialize
-      @files = Array.new
+      @files = Hash.new
       @terms = Terms.new
+      @links = Links.new
       @current_doc = nil
     end
     
     def store_file(filename,title,pagerank=1)
-      @files << @current_document = Document.new(filename, title, pagerank)
+      @files[filename] = @current_document = Document.new(filename, title, pagerank)
     end
     
     def store_term(term,rank)
@@ -71,7 +76,7 @@ class Temporary_Storage
     end
     
     def store_link(links)
-      
+      @links.add(links)
     end
     
     def get_file(filename)
@@ -87,7 +92,13 @@ class Temporary_Storage
     end
     
     def get_links
-      
+      @links.get_all
+    end
+    
+    def calculate_pageranks_from_links
+      @links.get_all.each do |link, rank|
+        @files[link] = rank if @files.has_key?(link)
+      end
     end
     
     private
@@ -103,19 +114,19 @@ class Temporary_Storage
     
     class Terms
       def initialize
-        @Terms = Hash.new
+        @terms = Hash.new
       end
       
       def store(term,term2document)
-        @Terms.has_key?(term) ? @Terms[term] << term2document : @Terms[term]=[term2document]
+        @terms.has_key?(term) ? @terms[term] << term2document : @terms[term]=[term2document]
       end
       
       def get_one(term)
-        @Terms[term]
+        @terms[term]
       end
       
       def get_all
-        @Terms
+        @terms
       end
     end
     
@@ -124,6 +135,20 @@ class Temporary_Storage
       def initialize(document, rank)
         @document = document
         @rank = rank
+      end
+    end
+    
+    class Links
+      def initialize
+        @links = Hash.new
+      end
+      
+      def add(links)
+        links.each{ |link| @links.has_key?(link)? @links[link]+=1 : @links[link]=1 }
+      end
+      
+      def get_all
+        @links
       end
     end
   end

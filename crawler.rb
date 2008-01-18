@@ -66,9 +66,9 @@ class Crawler
   end
 
   def get_stored_files
+    @storage.calculate_pageranks_from_links
     puts @storage.get_files.inspect
-    puts @storage.get_links.inspect
-    puts @storage.get_terms.keys
+    #puts @storage.get_terms.keys
   end
   ###### HELPER METHODS
   private
