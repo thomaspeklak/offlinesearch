@@ -9,6 +9,10 @@
 require 'find'
 require 'rexml/document'
 
+require 'rubygems'
+require 'hpricot'
+
+
 class Crawler
   attr_writer :resource
 
@@ -45,20 +49,12 @@ class Crawler
           doc = XmlCrawler.new(lines,file,@storage)
           doc.crawler_and_store
         rescue REXML::ParseException
-          # no valid xhtml
-          # try to retrieve as much information as possible
-          title=text_tag(lines,'title')          
-          #h1=text_tag(lines,'h1')
-          #h2=text_tag(lines,'h2')
-          a = Array.new
-          href = Array.new
-          #a_href_and_content(lines).each do |links|
-          #  href << resolve_link(links[0],File.dirname(file))
-          #  a << links[1]
-          #end
-          #@storage.store_file(file,title)
-          #@storage.store_term(h1,7)
-          #@storage.store_link(href) unless href.nil?
+          puts 'WARINING ::: '+file+' ::: document not valid - trying to rescue'
+          doc = Hpricot(lines)
+          puts doc.at('//head/title').inner_text
+          (doc/'a[@href]').each { |a| puts a.get_attribute('href') }
+          puts doc.traverse_text { |text|  puts text}
+          puts doc.at('h2').parent.name
         end
         
       end
@@ -67,39 +63,11 @@ class Crawler
 
   def get_stored_files
     @storage.calculate_pageranks_from_links
-    puts @storage.get_files.inspect
+    #puts @storage.get_files.inspect
     #puts @storage.get_terms.keys
   end
   ###### HELPER METHODS
   private
-  
-  def tag_content(text,tag)
-    #TODO not greedy regular expression
-    if m = text.scan(/<#{tag}[^>]*>.*?<\/#{tag}>/i)
-      strip_tags(m)
-    else
-      nil
-    end
-  end
-
-  def a_href_and_content(text)
-    m = text.scan(/<a href=["'](.*?)["'][^>]*>(.*?)<\/a>/i)
-  end
-
-  def strip_tags(matches)
-    result = Array.new
-    matches.each { |t| result << t.gsub(/<[^>]*>/,'') unless t.nil? }
-    result
-  end
-
-
-  def text_tag(text,tag)
-     strip_tags(tag_content(text,tag))
-  end
-
-  def print_var(var,indent)
-    var.each  { |v|  puts " "*indent+"#{v}"}      unless var.nil?
-  end  
   
   class DocCrawler
     def resolve_link(link,dir)
