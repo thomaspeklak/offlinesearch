@@ -47,25 +47,23 @@ class Crawler
         begin
           #try to parse the html as xml
           doc = XmlCrawler.new(lines,file,@storage)
-          doc.crawler_and_store
         rescue REXML::ParseException
+          #as a fallback use hpricot
           puts 'WARINING ::: '+file+' ::: document not valid - trying to rescue'
-          doc = Hpricot(lines)
-          puts doc.at('//head/title').inner_text
-          (doc/'a[@href]').each { |a| puts a.get_attribute('href') }
-          puts doc.traverse_text { |text|  puts text}
-          puts doc.at('h2').parent.name
+          doc = HpricotCrawler.new(lines,file,@storage)
         end
-        
+        doc.crawler_and_store
       end
     end
   end
 
   def get_stored_files
     @storage.calculate_pageranks_from_links
-    #puts @storage.get_files.inspect
+    puts @storage.get_files.inspect
+    puts @storage.get_links.inspect
     #puts @storage.get_terms.keys
   end
+
   ###### HELPER METHODS
   private
   
@@ -80,6 +78,24 @@ class Crawler
           return File.expand_path(dir+'/'+link)
         else
           return nil
+      end
+    end
+    
+    def crawler_and_store
+      @storage.store_file(@file,get_title)
+      @storage.store_link(get_hrefs)
+      split_and_store      
+    end
+
+    private
+    
+    def split_and_store()
+      get_texts.each do |text_block|
+        rank=text_block.semantic_value
+        text_block.to_s.split.each do |term|
+          #TODO unescape HTML entities
+          @storage.store_term(term,rank)
+        end
       end
     end
   end
@@ -118,16 +134,6 @@ class Crawler
       end
     end
     
-    def split_and_store()
-      get_texts.each do |text_block|
-        rank=text_block.semantic_value.inspect
-        text_block.to_s.split.each do |term|
-          #TODO unescape HTML entities
-          @storage.store_term(term,rank)
-        end
-      end
-    end
-    
     def get_hrefs
       a=@xml.elements.to_a("//a")
       href= Array.new
@@ -143,6 +149,52 @@ class Crawler
       end
       def semantic_value
         REXML::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
+        rank = 1
+        node = parent
+        while @@semantic_tags.include?(node.name)
+          rank += $config['crawler']['tags'][node.name]
+          node = node.parent
+        end
+        rank
+      end
+    end
+  end
+  
+  class HpricotCrawler < DocCrawler
+    def initialize(lines,file,storage)
+      @doc = Hpricot(lines)
+      @file = file
+      @storage = storage
+    end
+    
+    private
+    
+    def get_title
+      @doc.at('//head/title').inner_text
+    end
+    
+    def get_texts
+      texts = Array.new
+      @doc.traverse_text { |text|  texts << text unless text.to_s.strip.empty?}
+      if block_given?
+        yield texts
+      else
+        texts
+      end
+    end
+    
+    def get_hrefs
+      links = Array.new
+      (@doc/'a[@href]').each { |a| links << resolve_link(a.get_attribute('href'),File.dirname(@file)) }
+      links
+    end
+    
+    class Hpricot::Text
+      def self.store_semantics(tags)
+        @@semantic_tags=tags
+      end
+      def semantic_value
+        Hpricot::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
         rank = 1
         node = parent
         while @@semantic_tags.include?(node.name)
