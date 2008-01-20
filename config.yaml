@@ -18,4 +18,6 @@ crawler:
     dt: 9
     u: 3
     a: 6
-
+logger:
+  file: STDOUT
+  level: info

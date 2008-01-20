@@ -5,9 +5,11 @@
 #
 
 require "YAML"
-require "crawler"
-
 $config = YAML.load_file("config.yaml")
+
+require "log_init"
+
+require "crawler"
 
 crawler=Crawler.new
 

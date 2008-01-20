@@ -39,6 +39,7 @@ class Crawler
 
   def parse_files
     @files.each do |file|
+      $logger.info("processing #{file}")
       lines=''
       File.open(file) do |f|
         while line=f.gets
@@ -49,7 +50,7 @@ class Crawler
           doc = XmlCrawler.new(lines,file,@storage)
         rescue REXML::ParseException
           #as a fallback use hpricot
-          puts 'WARINING ::: '+file+' ::: document not valid - trying to rescue'
+          $logger.warn("file not valid XHTML- trying to rescue")
           doc = HpricotCrawler.new(lines,file,@storage)
         end
         doc.crawler_and_store
@@ -60,7 +61,7 @@ class Crawler
   def get_stored_files
     @storage.calculate_pageranks_from_links
     puts @storage.get_files.inspect
-    puts @storage.get_links.inspect
+    #puts @storage.get_links.inspect
     #puts @storage.get_terms.keys
   end
 
@@ -103,7 +104,6 @@ class Crawler
   # This class parses a file and tries to extract semantic information
   class XmlCrawler < DocCrawler
     def initialize(lines,file,storage)
-      puts file
       @file = file
       @storage = storage
       begin
