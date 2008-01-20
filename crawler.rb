@@ -62,7 +62,7 @@ class Crawler
     @storage.calculate_pageranks_from_links
     puts @storage.get_files.inspect
     #puts @storage.get_links.inspect
-    #puts @storage.get_terms.keys
+    puts @storage.get_terms.keys.sort
   end
 
   ###### HELPER METHODS
@@ -93,7 +93,7 @@ class Crawler
     def split_and_store()
       get_texts.each do |text_block|
         rank=text_block.semantic_value
-        text_block.to_s.split.each do |term|
+        text_block.to_s.split(/\b/).each do |term|
           #TODO unescape HTML entities
           @storage.store_term(term,rank)
         end
