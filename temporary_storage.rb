@@ -104,10 +104,10 @@ class Temporary_Storage
     private
     
     class Document
-      @@id=0
-      attr_accessor :name, :title, :page_rank
+      @@ID=0
+      attr_accessor :ID, :name, :title, :page_rank
       def initialize(name,title,page_rank)
-        @id= @@id+=1
+        @ID= @@ID+=1
         @name = name
         @title = title
         @page_rank = page_rank

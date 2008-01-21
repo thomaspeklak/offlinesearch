@@ -21,3 +21,5 @@ crawler:
 logger:
   file: STDOUT
   level: info
+search_generator:
+  search_data_file: out/search_data.js
