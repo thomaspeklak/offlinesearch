@@ -11,6 +11,8 @@ require 'rexml/document'
 
 require 'rubygems'
 require 'hpricot'
+require 'htmlentities'
+require 'Kconv'
 
 
 class Crawler
@@ -43,7 +45,7 @@ class Crawler
       lines=''
       File.open(file) do |f|
         while line=f.gets
-          lines+=line.chomp
+          lines+=Kconv.toutf8(line.chomp)
         end
         begin
           #try to parse the html as xml
@@ -56,13 +58,15 @@ class Crawler
         doc.crawler_and_store
       end
     end
+    @storage.calculate_pageranks_from_links
   end
 
   def get_stored_files
-    @storage.calculate_pageranks_from_links
-    puts @storage.get_files.inspect
-    #puts @storage.get_links.inspect
-    puts @storage.get_terms.keys.sort
+    @storage.get_files.inspect
+  end
+  
+  def get_terms
+    @storage.get_terms
   end
 
   ###### HELPER METHODS
@@ -93,8 +97,7 @@ class Crawler
     def split_and_store()
       get_texts.each do |text_block|
         rank=text_block.semantic_value
-        text_block.to_s.split(/\b/).each do |term|
-          #TODO unescape HTML entities
+        HTMLEntities::decode_entities(text_block.to_s.downcase).split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
           @storage.store_term(term,rank)
         end
       end
