@@ -13,19 +13,27 @@ class SearchGenerator
   end
   
   def generate_terms
-    @search_data_file.print "{"
+    $logger.info("generating term base")
+    out = Array.new
+    out << "vars terms = {"
     @terms.each do |term, reference|
-      @search_data_file.print "'#{term}':["
+      out << "'#{term}':["
       docs = Hash.new
       reference.each { |r| docs.has_key?(r.document.ID)? docs[r.document.ID]+=r.rank : docs[r.document.ID] = r.rank }
-      docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| @search_data_file.print "[#{doc_ID},#{rank}],"}
-      @search_data_file.print "],\n"
+      docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "[#{doc_ID},#{rank}],"}
+      out << "],\n"
     end
-    @search_data_file.print "}"
+    @search_data_file.puts out.join + "}"
   end
   
   def generate_files
-    
+    $logger.info("generating file base")
+    out = Array.new
+    out << "vars files = {"
+    @files.each_value do |f|
+      out << "#{f.ID}=['#{f.title}','#{f.name}',#{f.page_rank}],"
+    end
+    @search_data_file.puts out.join + "}"    
   end
   
   def generate_templates

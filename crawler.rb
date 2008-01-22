@@ -62,7 +62,7 @@ class Crawler
   end
 
   def get_stored_files
-    @storage.get_files.inspect
+    @storage.get_files
   end
   
   def get_terms

@@ -18,4 +18,5 @@ crawler.parse_files
 
 generator = SearchGenerator.new(crawler.get_stored_files, crawler.get_terms)
 generator.generate_terms
+generator.generate_files
 generator.cleanup
