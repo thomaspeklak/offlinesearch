@@ -15,7 +15,7 @@ class SearchGenerator
   def generate_terms
     $logger.info("generating term base")
     out = Array.new
-    out << "vars terms = {"
+    out << "var terms = {"
     @terms.each do |term, reference|
       out << "'#{term}':["
       docs = Hash.new
@@ -29,9 +29,9 @@ class SearchGenerator
   def generate_files
     $logger.info("generating file base")
     out = Array.new
-    out << "vars files = {"
+    out << "var files = {"
     @files.each_value do |f|
-      out << "#{f.ID}=['#{f.title}','#{f.name}',#{f.page_rank}],"
+      out << "#{f.ID}:['#{f.title}','#{f.name}',#{f.page_rank}],"
     end
     @search_data_file.puts out.join + "}"    
   end

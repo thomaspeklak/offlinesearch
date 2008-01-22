@@ -32,7 +32,7 @@ class Crawler
     Find.find(@resource) do |f|
       if FileTest.file?f
         if File.basename(f) =~ /(#{test[0..-2]})$/i
-          @files.push(f)
+          @files.push(f) unless File.basename(f)=~/#{$config['crawler']['exceptions']}/i
         end
       end
     end
@@ -42,11 +42,13 @@ class Crawler
   def parse_files
     @files.each do |file|
       $logger.info("processing #{file}")
-      lines=''
       File.open(file) do |f|
+				lines_array= Array.new
         while line=f.gets
-          lines+=Kconv.toutf8(line.chomp)
+          #lines+=Kconv.toutf8(line.chomp)
+          lines_array << line.chomp
         end
+				lines = lines_array.join(' ')
         begin
           #try to parse the html as xml
           doc = XmlCrawler.new(lines,file,@storage)
@@ -141,7 +143,7 @@ class Crawler
       a=@xml.elements.to_a("//a")
       href= Array.new
       a.each do |anker|
-        link=resolve_link(anker.attributes.get_attribute('href').value,File.dirname(@file))
+        link=resolve_link(anker.attributes.get_attribute('href').value,File.dirname(@file)) if anker.attributes.get_attribute('href')
         href << link unless link.nil?
       end
       href

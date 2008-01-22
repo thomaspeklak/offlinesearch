@@ -1,9 +1,9 @@
 language: english
 storage: memory
 crawler:
-  docpath: /Users/tom/Documents/sabine/sabineirawan.com
+  docpath: D
   docs: [html, htm]
-  exceptions: nil
+  exceptions: _dab
   tags:
     h1: 20
     h2: 15
