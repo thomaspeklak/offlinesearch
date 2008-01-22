@@ -1,3 +1,4 @@
+# generates the data for the search
 #
 # * $Author$
 # * $Rev$
@@ -5,6 +6,7 @@
 #
 
 class SearchGenerator
+  # needs files and terms and an entry in the config representing the location of the javascript file
   def initialize(files, terms)
     @files = files
     @terms = terms
@@ -12,6 +14,8 @@ class SearchGenerator
     @search_data_file = File.new($config['search_generator']['search_data_file'],'w')
   end
   
+  # generates a javascript hash of the indexed terms and writes it to the javascript file
+  # term => document id, rank
   def generate_terms
     $logger.info("generating term base")
     out = Array.new
@@ -26,6 +30,7 @@ class SearchGenerator
     @search_data_file.puts out.join + "}"
   end
   
+  # generates a javascript hash of file ids => title, file name, pagerank
   def generate_files
     $logger.info("generating file base")
     out = Array.new
@@ -40,6 +45,7 @@ class SearchGenerator
     
   end
   
+  # performs cleanup operations
   def cleanup
     @search_data_file.close
   end

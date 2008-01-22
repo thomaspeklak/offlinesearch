@@ -1,3 +1,4 @@
+# configures the ruby logger
 #
 # * $Author$
 # * $Rev$

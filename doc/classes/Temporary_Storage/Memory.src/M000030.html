@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 98</span>
+  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 119</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">calculate_pageranks_from_links</span>
       <span class="ruby-ivar">@links</span>.<span class="ruby-identifier">get_all</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">link</span>, <span class="ruby-identifier">rank</span><span class="ruby-operator">|</span>
         <span class="ruby-ivar">@files</span>[<span class="ruby-identifier">link</span>].<span class="ruby-identifier">page_rank</span>=<span class="ruby-identifier">rank</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@files</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">link</span>)
