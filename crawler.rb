@@ -1,6 +1,6 @@
 # CRAWLER
 # searches dirctory for files
-# parses files for keywords and pagerank
+# parses files for keywords, semantic keyword rank and pagerank
 #
 # * $Author$
 # * $Rev$
@@ -14,16 +14,17 @@ require 'hpricot'
 require 'htmlentities'
 require 'Kconv'
 
-
 class Crawler
   attr_writer :resource
-
+  # requires a docpath set in the config file and a temporary storage handler
   def initialize
     @resource = $config['crawler']['docpath']
     require "temporary_storage"
     @storage=Temporary_Storage.new($config['storage'])
   end
 
+  # serach the given docpath for files with a valid extension and excludes files that should not be indexed
+  # returns an array of files
   def find_files()
     filter=$config['crawler']['docs']
     test=''
@@ -39,6 +40,9 @@ class Crawler
     @files
   end
 
+  # takes an array of files an iterates through it. each file is read into a string and sent to a doccrawler for further processing
+  # if the file is a valid XHTML file, the file is processed with REXML otherwise Hpricot is used and a warning is written to the log
+  # no value is returned
   def parse_files
     @files.each do |file|
       $logger.info("processing #{file}")
@@ -63,10 +67,12 @@ class Crawler
     @storage.calculate_pageranks_from_links
   end
 
+  # returns a hash of the parsed documents
   def get_stored_files
     @storage.get_files
   end
   
+  # returns a hash of the indexed terms with ranks and links to the documents
   def get_terms
     @storage.get_terms
   end
@@ -74,7 +80,9 @@ class Crawler
   ###### HELPER METHODS
   private
   
+  # This abstract class parses a file and tries to extract semantic information
   class DocCrawler
+    # tries to ignore external links an convert internal links
     def resolve_link(link,dir)
       case 
         when link =~ /^(http|ftp|mailto)/
@@ -88,6 +96,7 @@ class Crawler
       end
     end
     
+    # method invokes other methods to get certain information about the document. These methods are implemented in the child classes
     def crawler_and_store
       @storage.store_file(@file,get_title)
       @storage.store_link(get_hrefs)
@@ -96,6 +105,7 @@ class Crawler
 
     private
     
+    # splits textblocks and stores terms in the storage controller
     def split_and_store()
       get_texts.each do |text_block|
         rank=text_block.semantic_value
@@ -106,7 +116,7 @@ class Crawler
     end
   end
   
-  # This class parses a file and tries to extract semantic information
+  # parses valid XHTML documents and extracts information
   class XmlCrawler < DocCrawler
     def initialize(lines,file,storage)
       @file = file
@@ -117,18 +127,16 @@ class Crawler
         raise
       end
     end
-    def crawler_and_store
-      @storage.store_file(@file,get_title)
-      @storage.store_link(get_hrefs)
-      split_and_store
-    end
     
     private
     
+    # extracts and returns the title of the document
     def get_title
       @xml.elements.each('//head//title/text()')
     end
     
+    # extracts all texts and returns an array of REXML::Texts if no block is given
+    # if a block is given then the texts are passed to it
     def get_texts
       texts=@xml.elements.each("//body//text()")
       texts.delete_if { |t| t.to_s.lstrip.empty?}
@@ -139,6 +147,7 @@ class Crawler
       end
     end
     
+    # returns an array of internal links in the document
     def get_hrefs
       a=@xml.elements.to_a("//a")
       href= Array.new
@@ -148,10 +157,15 @@ class Crawler
       end
       href
     end
+    
+    # extends REXML::Text with the functionaliy to extract semantic information
     class REXML::Text
+      # stores an array of meaningful tags with their rank value
       def self.store_semantics(tags)
         @@semantic_tags=tags
       end
+      
+      # extracts the semantic value of a text block
       def semantic_value
         REXML::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
         rank = 1
@@ -165,6 +179,7 @@ class Crawler
     end
   end
   
+  # parses non valid XHTML documents and extracts information
   class HpricotCrawler < DocCrawler
     def initialize(lines,file,storage)
       @doc = Hpricot(lines)
@@ -174,10 +189,13 @@ class Crawler
     
     private
     
+    # extracts and returns the title of the document
     def get_title
       @doc.at('//head/title').inner_text
     end
     
+    # extracts all texts and returns an array of REXML::Texts if no block is given
+    # if a block is given then the texts are passed to it
     def get_texts
       texts = Array.new
       @doc.traverse_text { |text|  texts << text unless text.to_s.strip.empty?}
@@ -188,16 +206,21 @@ class Crawler
       end
     end
     
+    # returns an array of internal links in the document
     def get_hrefs
       links = Array.new
       (@doc/'a[@href]').each { |a| links << resolve_link(a.get_attribute('href'),File.dirname(@file)) }
       links
     end
-    
+
+    # extends Hpricot::Text with the functionaliy to extract semantic information    
     class Hpricot::Text
+      # stores an array of meaningful tags with their rank value
       def self.store_semantics(tags)
         @@semantic_tags=tags
       end
+
+      # extracts the semantic value of a text block
       def semantic_value
         Hpricot::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
         rank = 1
