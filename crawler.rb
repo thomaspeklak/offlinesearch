@@ -79,7 +79,41 @@ class Crawler
   ###### HELPER METHODS
   private
   
-  include 'doc_crawler'
+  # This abstract class parses a file and tries to extract semantic information
+  class DocCrawler
+    # tries to ignore external links an convert internal links
+    def resolve_link(link,dir)
+      case 
+        when link =~ /^(http|ftp|mailto)/
+          return nil
+        when link =~ /^[\/a-zA-Z0-9_-]/
+          return (dir+'/'+link).gsub(/.*#{$config['crawler']['docpath']}/,'')
+        when link =~ /^\./
+          return (File.expand_path(dir+'/'+link)).gsub(/.*#{$config['crawler']['docpath']}/,'')
+        else
+          return nil
+      end
+    end
+    
+    # method invokes other methods to get certain information about the document. These methods are implemented in the child classes
+    def crawler_and_store
+      @storage.store_file(@file,get_title)
+      @storage.store_link(get_hrefs)
+      split_and_store      
+    end
+
+    private
+    
+    # splits textblocks and stores terms in the storage controller
+    def split_and_store()
+      get_texts.each do |text_block|
+        rank=text_block.semantic_value
+        HTMLEntities::decode_entities(text_block.to_s.downcase).split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
+          @storage.store_term(term,rank) unless term.size < 2
+        end
+      end
+    end
+  end
   
   # parses valid XHTML documents and extracts information
   class XmlCrawler < DocCrawler
