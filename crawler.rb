@@ -49,11 +49,10 @@ class Crawler
       File.open(file) do |f|
         lines_array= Array.new
         while line=f.gets
-          #lines+=Kconv.toutf8(line.chomp)
           lines_array << line.chomp
         end
         lines = lines_array.join(' ')
-        lines = Kconv.toutf8(lines) Kconv.guess(lines) == NKF::UTF8
+        lines = Kconv.toutf8(lines) unless Kconv.guess(lines) == NKF::UTF8
         begin
           #try to parse the html as xml
           doc = XmlCrawler.new(lines,file,@storage)
@@ -89,9 +88,9 @@ class Crawler
         when link =~ /^(http|ftp|mailto)/
           return nil
         when link =~ /^[\/a-zA-Z0-9_-]/
-          return dir+'/'+link
+          return (dir+'/'+link).gsub(/.*#{$config['crawler']['docpath']}/,'')
         when link =~ /^\./
-          return File.expand_path(dir+'/'+link)
+          return (File.expand_path(dir+'/'+link)).gsub(/.*#{$config['crawler']['docpath']}/,'')
         else
           return nil
       end
@@ -111,7 +110,7 @@ class Crawler
       get_texts.each do |text_block|
         rank=text_block.semantic_value
         HTMLEntities::decode_entities(text_block.to_s.downcase).split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
-          @storage.store_term(term,rank)
+          @storage.store_term(term,rank) unless term.size < 2
         end
       end
     end

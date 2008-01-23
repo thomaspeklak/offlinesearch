@@ -1,3 +1,4 @@
+# Start point for OS
 #
 # * $Author$
 # * $Rev$
