@@ -47,12 +47,13 @@ class Crawler
     @files.each do |file|
       $logger.info("processing #{file}")
       File.open(file) do |f|
-				lines_array= Array.new
+        lines_array= Array.new
         while line=f.gets
           #lines+=Kconv.toutf8(line.chomp)
           lines_array << line.chomp
         end
-				lines = lines_array.join(' ')
+        lines = lines_array.join(' ')
+        lines = Kconv.toutf8(lines) Kconv.guess(lines) == NKF::UTF8
         begin
           #try to parse the html as xml
           doc = XmlCrawler.new(lines,file,@storage)
