@@ -24,3 +24,4 @@ logger:
 search_generator:
   search_data_file: out/search_data.js
   output_encoding: uft-8
+  template: base

@@ -10,8 +10,8 @@ require 'find'
 require 'rexml/document'
 require 'rubygems'
 require 'hpricot'
-require 'htmlentities'
 require 'Kconv'
+require 'entity_converter'
 
 class Crawler
   attr_writer :resource
@@ -51,7 +51,7 @@ class Crawler
           lines_array << line.chomp
         end
         lines = lines_array.join(' ')
-        lines = Kconv.toutf8(lines) unless Kconv.guess(lines) == NKF::UTF8
+        #lines = Kconv.toutf8(lines) unless Kconv.guess(lines) == NKF::UTF8
         begin
           #try to parse the html as xml
           doc = XmlCrawler.new(lines,file,@storage)
@@ -104,11 +104,11 @@ class Crawler
 
     private
     
-    # splits textblocks and stores terms in the storage controller
+    # splits textblocks and stores terms in the storage. this method splits an all characters that are non aplhpa
     def split_and_store()
       get_texts.each do |text_block|
         rank=text_block.semantic_value
-        HTMLEntities::decode_entities(text_block.to_s.downcase).split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
+        text_block.to_s.downcase.decode_html_entities.split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
           @storage.store_term(term,rank) unless term.size < 2
         end
       end

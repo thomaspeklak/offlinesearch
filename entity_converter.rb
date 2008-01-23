@@ -1,0 +1,23 @@
+# extends the string class to convert html entities
+
+class String
+  # this method converts encoded entities to their utf-8 euqivalent. be careful this method strips out all unknown entities because they are of no special use for the semantic search
+  def decode_html_entities 
+    mgsub([[/&auml;/,'ä'],[/&Auml;/,'Ä'],[/&ouml;/,'ö'],[/&Ouml;/,'Ö'],[/&uuml;/,'ü'],[/&Uuml;/,'U'],[/&szlig;/,'ß'],[/&[a-zA-Z]{4,6};/,' ']])
+  end
+
+  # encodes html entities
+  def encode_html_entities
+    mgsub([[/ä/,'&auml;'],[/Ä/,'&Auml;'],[/ö/,'&ouml;'],[/Ö/,'&Ouml;'],[/ü/,'&uuml;'],[/U/,'&Uuml;'],[/ß/,'&szlig;']])    
+  end
+  
+  private
+
+  # method to substitute multiple strings at once. [Author: Ruby Cookbook]
+  def mgsub(key_value_pairs=[].freeze)
+    regexp_fragments = key_value_pairs.collect { |k,v| k }
+    gsub(Regexp.union(*regexp_fragments)) do |match|
+    key_value_pairs.detect{|k,v| k =~ match}[1]
+  end
+end  
+end

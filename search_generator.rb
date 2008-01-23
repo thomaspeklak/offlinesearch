@@ -27,7 +27,7 @@ class SearchGenerator
       docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "[#{doc_ID},#{rank}],"}
       out << "],\n"
     end
-    @search_data_file.puts out.join + "}"
+    @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-3] + "}"
   end
   
   # generates a javascript hash of file ids => title, file name, pagerank
@@ -38,7 +38,7 @@ class SearchGenerator
     @files.each_value do |f|
       out << "#{f.ID}:['#{f.title}','#{f.name}',#{f.page_rank}],"
     end
-    @search_data_file.puts out.join + "}"    
+    @search_data_file.puts out.join[0..-2] + "}"    
   end
   
   def generate_templates

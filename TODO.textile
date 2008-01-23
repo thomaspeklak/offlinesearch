@@ -1,0 +1,11 @@
+FEATURES
+	* implement output encoding of search base
+	* switch to integrate jquery or link to external
+	* remove beginnig of path
+	* search relation to path
+	
+BUGS
+	
+
+TODOS
+	implement unit tests
