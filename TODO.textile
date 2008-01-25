@@ -5,7 +5,8 @@ FEATURES
 	* search relation to path
 	
 BUGS
-	
+	pagerank does not work after path change
+	no umlauts in title
 
 TODOS
 	implement unit tests
