@@ -42,5 +42,10 @@ $(document).ready(function(){
 	};
 	
 	$.sortByFirstValue = function(a,b){return b[0]-a[0];};
-	
+	$.intersectResultsArrays = function (result1,result2){
+		intersectedResults = new Array();
+		for (r1 in result1)
+			if(result2[r1]) intersectedResults[r1] = [result1[r1][0]+result2[r1][0], result2[r1][1], result2[r1][2]];
+		return intersectedResults;
+	};
 })(jQuery);
