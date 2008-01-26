@@ -7,7 +7,7 @@
 $(document).ready(function(){
 	$('#search').keydown(function(e){
 		if(e.keyCode == 13){
-			$('#search_results').show_results(this.value);
+			$('#search_results').show_results(this.value.toLowerCase());
 			return false;
 		}
 	})
