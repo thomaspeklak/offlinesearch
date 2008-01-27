@@ -51,14 +51,13 @@ class Crawler
           lines_array << line.chomp
         end
         lines = lines_array.join(' ')
-        #lines = Kconv.toutf8(lines) unless Kconv.guess(lines) == NKF::UTF8
         begin
           #try to parse the html as xml
           doc = XmlCrawler.new(lines,file,@storage)
         rescue REXML::ParseException
           #as a fallback use hpricot
           $logger.warn("file not valid XHTML- trying to rescue")
-          doc = HpricotCrawler.new(lines,file,@storage)
+          doc = HpricotCrawler.new(lines.decode_html_entities,file,@storage)
         end
         doc.crawler_and_store
       end

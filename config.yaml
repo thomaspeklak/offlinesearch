@@ -1,7 +1,7 @@
 language: english
 storage: memory
 crawler:
-  docpath: test
+  docpath: test/D
   docs: [html, htm]
   exceptions: _dab
   tags:

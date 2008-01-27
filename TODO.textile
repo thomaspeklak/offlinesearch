@@ -1,8 +1,9 @@
 FEATURES
-	* implement output encoding of search base
-	* switch to integrate jquery or link to external
-	* remove beginnig of path
-	* search relation to path
+	- implement output encoding of search base
+	- switch to integrate jquery or link to external
+	- remove beginnig of path
+	- search relation to path
+	- pagination in search
 	
 BUGS
 	pagerank does not work after path change

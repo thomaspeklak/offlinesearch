@@ -2,7 +2,7 @@
 
 class String
   # this method converts encoded entities to their utf-8 euqivalent. be careful this method strips out all unknown entities because they are of no special use for the semantic search
-  def decode_html_entities 
+  def decode_html_entities
     mgsub([[/&auml;/,'ä'],[/&Auml;/,'Ä'],[/&ouml;/,'ö'],[/&Ouml;/,'Ö'],[/&uuml;/,'ü'],[/&Uuml;/,'U'],[/&szlig;/,'ß'],[/&[a-zA-Z]{4,6};/,' ']])
   end
 
