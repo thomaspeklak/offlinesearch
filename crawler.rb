@@ -57,6 +57,7 @@ class Crawler
         rescue REXML::ParseException
           #as a fallback use hpricot
           $logger.warn("file not valid XHTML- trying to rescue")
+          #convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly
           doc = HpricotCrawler.new(lines.decode_html_entities,file,@storage)
         end
         doc.crawler_and_store
@@ -96,7 +97,7 @@ class Crawler
     
     # method invokes other methods to get certain information about the document. These methods are implemented in the child classes
     def crawler_and_store
-      @storage.store_file(@file,get_title)
+      @storage.store_file(resolve_link(@file,File.dirname(@file)),get_title)
       @storage.store_link(get_hrefs)
       split_and_store      
     end

@@ -26,7 +26,7 @@ $(document).ready(function(){
 		results.sort($.sortByFirstValue);
 		output= new Array();
 		while(r = results.shift())
-			output.push('<li>'+r[0]+'<a href="'+r[1]+'">'+r[2]+'</a>');
+			output.push('<li><span>'+r[0]+'</span><a href="'+r[1]+'">'+r[2]+'</a>');
 		this.html('<ol>'+output.join('')+'</ol>');
 	};
 
