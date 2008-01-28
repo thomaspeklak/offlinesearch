@@ -47,9 +47,9 @@ $(document).ready(function(){
 				var id = terms[foundTerms[t]][docs][0];
 				var file = files[id];
 				if (results[id])
-					results[id][0]+=terms[foundTerms[t]][docs][1]*file[2];
+					results[id][0]+=terms[foundTerms[t]][docs][1];
 				else
-					results[id]=[terms[foundTerms[t]][docs][1]*file[2],file[1],file[0]];
+					results[id]=[terms[foundTerms[t]][docs][1]+file[2],file[1],file[0]];
 			}
 		}
 		return results;

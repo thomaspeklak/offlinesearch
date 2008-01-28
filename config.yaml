@@ -5,19 +5,20 @@ crawler:
   docs: [html, htm]
   exceptions: _dab
   tags:
-    h1: 20
-    h2: 15
-    h3: 11
-    h4: 9
-    h5: 8
-    h6: 7
+    title: 60
+    h1: 40
+    h2: 25
+    h3: 18
+    h4: 13
+    h5: 11
+    h6: 9
     strong: 7
     b: 7
     em: 5
     i: 5
     dt: 9
-    u: 3
-    a: 6
+    u: 4
+    a: 3
 logger:
   file: STDOUT
   level: info
