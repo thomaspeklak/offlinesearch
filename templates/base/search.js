@@ -18,10 +18,12 @@ $(document).ready(function(){
 		var searchTerms = searchValue.split(' ');
 		var results=new Array();
 		for (term in searchTerms){
-			if (results.length)
-				results = $.intersectResultsArrays(results,$.getResultsForTerm(searchTerms[term]))
-			else
-				results = $.getResultsForTerm(searchTerms[term]);
+			if(searchTerms[term].length > 1){
+				if (results.length)
+					results = $.intersectResultsArrays(results,$.getResultsForTerm(searchTerms[term]))
+				else
+					results = $.getResultsForTerm(searchTerms[term]);
+			}
 		}
 		results.sort($.sortByFirstValue);
 		output= new Array();
@@ -32,7 +34,7 @@ $(document).ready(function(){
 
 	$.getResultsForTerm = function(term){
 		var foundTerms = new Array();
-		var searchTerm=eval('/'+term+'/');
+		var searchTerm = (term.match(/^["'][^"']+["']/))? eval('/^'+term.replace(/["']/g,'')+'$/') : eval('/'+term+'/');
 		for(t in terms)
 			if (searchTerm.test(t)) foundTerms.push(t);
 		var results=new Array();

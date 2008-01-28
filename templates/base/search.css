@@ -4,5 +4,5 @@
  * $LastChangedDate$
  */
 
-body{font:normal 75% 'Lucida Grande';}
+body{font:normal 75% 'Lucida Grande', Verdana;}
 ol li span{display:block;float:left;width:50px;clear:both;padding:0 10px;text-align:right;}
