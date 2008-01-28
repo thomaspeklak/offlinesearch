@@ -5,7 +5,9 @@ FEATURES
 	- pagination in search
 	
 BUGS
-
+	- page rank should not multiply result - try addition
+	- page title should be ranked higher
+	- rank headers higher
 
 TODOS
 	implement unit tests
@@ -13,3 +15,5 @@ TODOS
 	
 DOME
 - remove beginnig of path
+- include dash as possible search character or term seperator  = > terms are seperated by word boundary
+- quotes on multiple words "test check" => "test" "check"

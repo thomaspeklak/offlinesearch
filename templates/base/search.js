@@ -15,7 +15,9 @@ $(document).ready(function(){
 
 (function($){
 	$.fn.show_results = function(searchValue){
-		var searchTerms = searchValue.split(' ');
+		if(searchValue.match(/["'].*[ _\-\(\)].*["']/))
+			searchValue = $.quoteSearch(searchValue);
+		var searchTerms = searchValue.split(/[ _\-\(\)]/);
 		var results=new Array();
 		for (term in searchTerms){
 			if(searchTerms[term].length > 1){
@@ -34,7 +36,8 @@ $(document).ready(function(){
 
 	$.getResultsForTerm = function(term){
 		var foundTerms = new Array();
-		var searchTerm = (term.match(/^["'][^"']+["']/))? eval('/^'+term.replace(/["']/g,'')+'$/') : eval('/'+term+'/');
+		console.debug(term);
+		var searchTerm = (term.match(/^["'][^"']+["']$/))? eval('/^'+term.replace(/["']/g,'')+'$/') : eval('/'+term+'/');
 		for(t in terms)
 			if (searchTerm.test(t)) foundTerms.push(t);
 		var results=new Array();
@@ -58,4 +61,13 @@ $(document).ready(function(){
 			if(result2[r1]) intersectedResults[r1] = [result1[r1][0]+result2[r1][0], result2[r1][1], result2[r1][2]];
 		return intersectedResults;
 	};
+	$.quoteSearch = function(value){
+		while(quotes = value.match(/["'](.*[^"'][ _\-\(\)][^"'].*)["']/))
+			{
+				var terms = quotes[1].split(/[ _\-\(\)]/);
+				value = value.replace(/["'].*[^"'][ _\-\(\)][^"'].*["']/,"'"+terms.join("' '")+"'");
+			}
+		return value;
+	};
+	
 })(jQuery);
