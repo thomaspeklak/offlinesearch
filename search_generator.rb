@@ -14,6 +14,16 @@ class SearchGenerator
     @search_data_file = File.new($config['search_generator']['search_data_file'],'w')
   end
   
+  # generates the search data
+  def generate
+    generate_terms
+    generate_files
+    generate_relative_path
+    generate_frequency_file if ($config['search_generator']['output_frequency_to'])
+    cleanup    
+  end
+  
+  private
   # generates a javascript hash of the indexed terms and writes it to the javascript file
   # term => document id, rank
   def generate_terms
@@ -25,7 +35,7 @@ class SearchGenerator
       docs = Hash.new
       reference.each { |r| docs.has_key?(r.document.ID)? docs[r.document.ID]+=r.rank : docs[r.document.ID] = r.rank }
       docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "[#{doc_ID},#{rank}],"}
-      out << "],\n"
+      out << "],"
     end
     @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-3] + "}"
   end
@@ -41,8 +51,20 @@ class SearchGenerator
     @search_data_file.puts out.join[0..-2] + "}"    
   end
   
-  def generate_templates
-    
+  # stores the relative path in a vairable
+  def generate_relative_path
+    $logger.info("generating relative path")
+    @search_data_file.puts "var rel_path = '#{$config['search_generator']['relative_path_to_files']}'" if $config['search_generator'].has_key?('relative_path_to_files')
+  end
+  
+  def generate_frequency_file
+    $logger.info("generating frequency file")
+    File.open($config['search_generator']['output_frequency_to'],'w') do |f|
+      @terms.each do |term,reference|
+        f.puts "#{term} #{reference.size}"
+      end
+      
+    end
   end
   
   # performs cleanup operations

@@ -109,7 +109,7 @@ class Crawler
       get_texts.each do |text_block|
         rank=text_block.semantic_value
         text_block.to_s.downcase.decode_html_entities.split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
-          @storage.store_term(term,rank) unless term.size < 2
+          @storage.store_term(term,rank) unless (term.size < 2 || $stop_words.has_key?(term))
         end
       end
     end

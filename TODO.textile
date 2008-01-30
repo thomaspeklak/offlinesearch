@@ -8,7 +8,6 @@ BUGS
 
 TODOS
 	implement unit tests
-	implement stop word list
 	
 DOME
 - remove beginnig of path
@@ -17,3 +16,4 @@ DOME
 - page title should be ranked higher
 - rank headers higher
 - page rank should not multiply result - try addition
+- implement stop word list

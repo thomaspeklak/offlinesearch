@@ -1,9 +1,10 @@
 language: english
 storage: memory
 crawler:
-  docpath: test/D
+  docpath: test/umlaut
   docs: [html, htm]
   exceptions: _dab
+  stopwords: stopwords.txt
   tags:
     title: 60
     h1: 40
@@ -26,3 +27,5 @@ search_generator:
   search_data_file: out/search_data.js
   output_encoding: uft-8
   template: base
+  relative_path_to_files: D
+  output_frequency_to: out/frequency.txt
