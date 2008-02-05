@@ -35,9 +35,26 @@ $(document).ready(function(){
 	};
 
 	$.getResultsForTerm = function(term){
+		var exact_term = /^["'][^"']+["']$/.test(term);
+		if(exact_term)
+			return $.exactSearch(term.replace(/["']/g));
+		else
+		return $.mergeResultArrays($.exactSearch(term.replace(/["']/g)),$.fuzzySearch(eval('/'+term+'/')));
+	}
+	$.exactSearch = function(searchTerm){
+		var results=new Array();
+		for(docs in terms[searchTerm]){
+			var id = terms[searchTerm][docs][0];
+			var file = files[id];
+			if (results[id])
+				results[id][0]+=terms[searchTerm][docs][1]*1.5;
+			else
+				results[id]=[terms[searchTerm][docs][1]*1.5+file[2],file[1],file[0]];
+		}
+		return results;		
+	}
+	$.fuzzySearch = function(searchTerm){
 		var foundTerms = new Array();
-		console.debug(term);
-		var searchTerm = (term.match(/^["'][^"']+["']$/))? eval('/^'+term.replace(/["']/g,'')+'$/') : eval('/'+term+'/');
 		for(t in terms)
 			if (searchTerm.test(t)) foundTerms.push(t);
 		var results=new Array();
@@ -53,7 +70,8 @@ $(document).ready(function(){
 			}
 		}
 		return results;
-	}
+	}	
+	
 	$.sortByFirstValue = function(a,b){return b[0]-a[0];};
 	$.intersectResultsArrays = function (result1,result2){
 		intersectedResults = new Array();
@@ -61,6 +79,12 @@ $(document).ready(function(){
 			if(result2[r1]) intersectedResults[r1] = [result1[r1][0]+result2[r1][0], result2[r1][1], result2[r1][2]];
 		return intersectedResults;
 	};
+	$.mergeResultArrays = function(lesser, greater){
+		for (r in greater)
+			if(lesser[r]) greater[r][0]+=lesser[r][0];
+		return greater;
+	}
+	
 	$.quoteSearch = function(value){
 		while(quotes = value.match(/["'](.*[^"'][ _\-\(\)][^"'].*)["']/))
 			{

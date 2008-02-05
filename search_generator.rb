@@ -37,7 +37,7 @@ class SearchGenerator
       docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "[#{doc_ID},#{rank}],"}
       out << "],"
     end
-    @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-3] + "}"
+    @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-2] + "}"
   end
   
   # generates a javascript hash of file ids => title, file name, pagerank
