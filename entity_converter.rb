@@ -10,7 +10,8 @@ class String
   def encode_html_entities
     mgsub([[/ä/,'&auml;'],[/Ä/,'&Auml;'],[/ö/,'&ouml;'],[/Ö/,'&Ouml;'],[/ü/,'&uuml;'],[/U/,'&Uuml;'],[/ß/,'&szlig;']])    
   end
-
+  
+  # converts uppercase umlauts to downcase
   def umlaut_to_downcase
     mgsub([[/Ä/,'ä'],[/Ö/,'ö'],[/Ü/,'ü']])
   end

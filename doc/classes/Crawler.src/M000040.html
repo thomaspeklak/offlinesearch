@@ -5,16 +5,14 @@
 
 <html>
 <head>
-  <title>new (Crawler)</title>
+  <title>get_stored_files (Crawler)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File crawler.rb, line 20</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>
-    <span class="ruby-ivar">@resource</span> = <span class="ruby-identifier">$config</span>[<span class="ruby-value str">'crawler'</span>][<span class="ruby-value str">'docpath'</span>]
-    <span class="ruby-identifier">require</span> <span class="ruby-value str">&quot;temporary_storage&quot;</span>
-    <span class="ruby-ivar">@storage</span>=<span class="ruby-constant">Temporary_Storage</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">$config</span>[<span class="ruby-value str">'storage'</span>])
+  <pre><span class="ruby-comment cmt"># File crawler.rb, line 70</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_stored_files</span>
+    <span class="ruby-ivar">@storage</span>.<span class="ruby-identifier">get_files</span>
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>
