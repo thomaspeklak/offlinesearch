@@ -94,7 +94,10 @@ parses non valid XHTML documents and extracts information
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000042">new</a>&nbsp;&nbsp;
+      <a href="#M000050">get_hrefs</a>&nbsp;&nbsp;
+      <a href="#M000049">get_texts</a>&nbsp;&nbsp;
+      <a href="#M000048">get_title</a>&nbsp;&nbsp;
+      <a href="#M000047">new</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -122,17 +125,71 @@ parses non valid XHTML documents and extracts information
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000042" class="method-detail">
-        <a name="M000042"></a>
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
 
         <div class="method-heading">
-          <a href="HpricotCrawler.src/M000042.html" target="Code" class="method-signature"
-            onclick="popupCode('HpricotCrawler.src/M000042.html');return false;">
+          <a href="HpricotCrawler.src/M000047.html" target="Code" class="method-signature"
+            onclick="popupCode('HpricotCrawler.src/M000047.html');return false;">
           <span class="method-name">new</span><span class="method-args">(lines,file,storage)</span>
           </a>
         </div>
       
         <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Private Instance methods</h3>
+
+      <div id="method-M000050" class="method-detail">
+        <a name="M000050"></a>
+
+        <div class="method-heading">
+          <a href="HpricotCrawler.src/M000050.html" target="Code" class="method-signature"
+            onclick="popupCode('HpricotCrawler.src/M000050.html');return false;">
+          <span class="method-name">get_hrefs</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+returns an array of internal links in the document
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <a href="HpricotCrawler.src/M000049.html" target="Code" class="method-signature"
+            onclick="popupCode('HpricotCrawler.src/M000049.html');return false;">
+          <span class="method-name">get_texts</span><span class="method-args">() {|texts| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+extracts all texts and returns an array of REXML::Texts if no block is
+given if a block is given then the texts are passed to it
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <a href="HpricotCrawler.src/M000048.html" target="Code" class="method-signature"
+            onclick="popupCode('HpricotCrawler.src/M000048.html');return false;">
+          <span class="method-name">get_title</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+extracts and returns the title of the document
+</p>
         </div>
       </div>
 

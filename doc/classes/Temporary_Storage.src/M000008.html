@@ -5,14 +5,20 @@
 
 <html>
 <head>
-  <title>get_files (Temporary_Storage)</title>
+  <title>new (Temporary_Storage)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 52</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_files</span>
-    <span class="ruby-identifier">f</span>=<span class="ruby-ivar">@storage_handler</span>.<span class="ruby-identifier">get_files</span>
+  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 17</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">mode</span>)
+    <span class="ruby-ivar">@storage_handler</span>=<span class="ruby-keyword kw">case</span>
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">mode</span><span class="ruby-operator">==</span><span class="ruby-value str">'sqlite'</span><span class="ruby-operator">:</span> <span class="ruby-constant">Sqlite</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'storage.db'</span>)
+      <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">mode</span><span class="ruby-operator">==</span><span class="ruby-value str">'memory'</span><span class="ruby-operator">:</span> <span class="ruby-constant">Memory</span>.<span class="ruby-identifier">new</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory&quot;</span>
+        <span class="ruby-identifier">exit</span>
+    <span class="ruby-keyword kw">end</span>
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

@@ -5,14 +5,18 @@
 
 <html>
 <head>
-  <title>get_file (Temporary_Storage::Sqlite)</title>
+  <title>store_term (Temporary_Storage::Sqlite)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 245</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_file</span>(<span class="ruby-identifier">filename</span>)
-      <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">get_first_row</span>(<span class="ruby-value str">&quot;select * from files where filename = ?&quot;</span>, <span class="ruby-identifier">filename</span>)
+  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 227</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">store_term</span>(<span class="ruby-identifier">term</span>, <span class="ruby-identifier">rank</span>)
+      <span class="ruby-keyword kw">unless</span> (<span class="ruby-identifier">term_id</span>=<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">get_first_value</span>(<span class="ruby-value str">'select id from terms where term = ?'</span>,<span class="ruby-identifier">term</span>)) <span class="ruby-operator">:</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value str">&quot;insert into terms (term) values (?)&quot;</span>, <span class="ruby-identifier">term</span>)
+        <span class="ruby-identifier">term_id</span>=<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">last_insert_row_id</span>()
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value str">&quot;insert into files_terms values (?,?,?)&quot;</span>, <span class="ruby-ivar">@current_file_id</span>,<span class="ruby-identifier">term_id</span>,<span class="ruby-identifier">rank</span>)
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

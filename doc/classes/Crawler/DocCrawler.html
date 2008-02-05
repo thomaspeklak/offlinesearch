@@ -92,8 +92,9 @@ This abstract class parses a file and tries to extract semantic information
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000046">crawler_and_store</a>&nbsp;&nbsp;
-      <a href="#M000045">resolve_link</a>&nbsp;&nbsp;
+      <a href="#M000054">crawler_and_store</a>&nbsp;&nbsp;
+      <a href="#M000053">resolve_link</a>&nbsp;&nbsp;
+      <a href="#M000055">split_and_store</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -115,12 +116,12 @@ This abstract class parses a file and tries to extract semantic information
     <div id="methods">
       <h3 class="section-bar">Public Instance methods</h3>
 
-      <div id="method-M000046" class="method-detail">
-        <a name="M000046"></a>
+      <div id="method-M000054" class="method-detail">
+        <a name="M000054"></a>
 
         <div class="method-heading">
-          <a href="DocCrawler.src/M000046.html" target="Code" class="method-signature"
-            onclick="popupCode('DocCrawler.src/M000046.html');return false;">
+          <a href="DocCrawler.src/M000054.html" target="Code" class="method-signature"
+            onclick="popupCode('DocCrawler.src/M000054.html');return false;">
           <span class="method-name">crawler_and_store</span><span class="method-args">()</span>
           </a>
         </div>
@@ -133,12 +134,12 @@ These methods are implemented in the child classes
         </div>
       </div>
 
-      <div id="method-M000045" class="method-detail">
-        <a name="M000045"></a>
+      <div id="method-M000053" class="method-detail">
+        <a name="M000053"></a>
 
         <div class="method-heading">
-          <a href="DocCrawler.src/M000045.html" target="Code" class="method-signature"
-            onclick="popupCode('DocCrawler.src/M000045.html');return false;">
+          <a href="DocCrawler.src/M000053.html" target="Code" class="method-signature"
+            onclick="popupCode('DocCrawler.src/M000053.html');return false;">
           <span class="method-name">resolve_link</span><span class="method-args">(link,dir)</span>
           </a>
         </div>
@@ -146,6 +147,26 @@ These methods are implemented in the child classes
         <div class="method-description">
           <p>
 tries to ignore external links an convert internal links
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Private Instance methods</h3>
+
+      <div id="method-M000055" class="method-detail">
+        <a name="M000055"></a>
+
+        <div class="method-heading">
+          <a href="DocCrawler.src/M000055.html" target="Code" class="method-signature"
+            onclick="popupCode('DocCrawler.src/M000055.html');return false;">
+          <span class="method-name">split_and_store</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+splits textblocks and stores terms in the storage. this method splits an
+all characters that are non aplhpa
 </p>
         </div>
       </div>

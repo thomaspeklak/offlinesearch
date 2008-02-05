@@ -5,14 +5,34 @@
 
 <html>
 <head>
-  <title>get_terms (Crawler)</title>
+  <title>parse_files (Crawler)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File crawler.rb, line 76</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_terms</span>
-    <span class="ruby-ivar">@storage</span>.<span class="ruby-identifier">get_terms</span>
+  <pre><span class="ruby-comment cmt"># File crawler.rb, line 45</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_files</span>
+    <span class="ruby-ivar">@files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">$logger</span>.<span class="ruby-identifier">info</span>(<span class="ruby-node">&quot;processing #{file}&quot;</span>)
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">file</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">lines_array</span>= <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">line</span>=<span class="ruby-identifier">f</span>.<span class="ruby-identifier">gets</span>
+          <span class="ruby-identifier">lines_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">chomp</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">lines_array</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' '</span>)
+        <span class="ruby-keyword kw">begin</span>
+          <span class="ruby-comment cmt">#try to parse the html as xml</span>
+          <span class="ruby-identifier">doc</span> = <span class="ruby-constant">XmlCrawler</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lines</span>,<span class="ruby-identifier">file</span>,<span class="ruby-ivar">@storage</span>)
+        <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">REXML</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseException</span>
+          <span class="ruby-comment cmt">#as a fallback use hpricot</span>
+          <span class="ruby-identifier">$logger</span>.<span class="ruby-identifier">warn</span>(<span class="ruby-value str">&quot;file not valid XHTML- trying to rescue&quot;</span>)
+          <span class="ruby-comment cmt">#convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly</span>
+          <span class="ruby-identifier">doc</span> = <span class="ruby-constant">HpricotCrawler</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lines</span>.<span class="ruby-identifier">decode_html_entities</span>,<span class="ruby-identifier">file</span>,<span class="ruby-ivar">@storage</span>)
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">doc</span>.<span class="ruby-identifier">crawler_and_store</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-ivar">@storage</span>.<span class="ruby-identifier">calculate_pageranks_from_links</span>
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

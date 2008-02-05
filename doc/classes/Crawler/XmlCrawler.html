@@ -94,7 +94,10 @@ parses valid XHTML documents and extracts information
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-      <a href="#M000047">new</a>&nbsp;&nbsp;
+      <a href="#M000059">get_hrefs</a>&nbsp;&nbsp;
+      <a href="#M000058">get_texts</a>&nbsp;&nbsp;
+      <a href="#M000057">get_title</a>&nbsp;&nbsp;
+      <a href="#M000056">new</a>&nbsp;&nbsp;
       </div>
     </div>
 
@@ -122,17 +125,71 @@ parses valid XHTML documents and extracts information
     <div id="methods">
       <h3 class="section-bar">Public Class methods</h3>
 
-      <div id="method-M000047" class="method-detail">
-        <a name="M000047"></a>
+      <div id="method-M000056" class="method-detail">
+        <a name="M000056"></a>
 
         <div class="method-heading">
-          <a href="XmlCrawler.src/M000047.html" target="Code" class="method-signature"
-            onclick="popupCode('XmlCrawler.src/M000047.html');return false;">
+          <a href="XmlCrawler.src/M000056.html" target="Code" class="method-signature"
+            onclick="popupCode('XmlCrawler.src/M000056.html');return false;">
           <span class="method-name">new</span><span class="method-args">(lines,file,storage)</span>
           </a>
         </div>
       
         <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Private Instance methods</h3>
+
+      <div id="method-M000059" class="method-detail">
+        <a name="M000059"></a>
+
+        <div class="method-heading">
+          <a href="XmlCrawler.src/M000059.html" target="Code" class="method-signature"
+            onclick="popupCode('XmlCrawler.src/M000059.html');return false;">
+          <span class="method-name">get_hrefs</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+returns an array of internal links in the document
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000058" class="method-detail">
+        <a name="M000058"></a>
+
+        <div class="method-heading">
+          <a href="XmlCrawler.src/M000058.html" target="Code" class="method-signature"
+            onclick="popupCode('XmlCrawler.src/M000058.html');return false;">
+          <span class="method-name">get_texts</span><span class="method-args">() {|texts| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+extracts all texts and returns an array of REXML::Texts if no block is
+given if a block is given then the texts are passed to it
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000057" class="method-detail">
+        <a name="M000057"></a>
+
+        <div class="method-heading">
+          <a href="XmlCrawler.src/M000057.html" target="Code" class="method-signature"
+            onclick="popupCode('XmlCrawler.src/M000057.html');return false;">
+          <span class="method-name">get_title</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+extracts and returns the title of the document
+</p>
         </div>
       </div>
 

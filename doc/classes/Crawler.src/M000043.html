@@ -5,14 +5,25 @@
 
 <html>
 <head>
-  <title>get_stored_files (Crawler)</title>
+  <title>find_files (Crawler)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File crawler.rb, line 71</span>
-  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_stored_files</span>
-    <span class="ruby-ivar">@storage</span>.<span class="ruby-identifier">get_files</span>
+  <pre><span class="ruby-comment cmt"># File crawler.rb, line 27</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_files</span>()
+    <span class="ruby-identifier">filter</span>=<span class="ruby-identifier">$config</span>[<span class="ruby-value str">'crawler'</span>][<span class="ruby-value str">'docs'</span>]
+    <span class="ruby-identifier">test</span>=<span class="ruby-value str">''</span>
+    <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">fi</span><span class="ruby-operator">|</span>  <span class="ruby-identifier">test</span><span class="ruby-operator">+=</span><span class="ruby-node">&quot;.*#{fi}|&quot;</span>}
+    <span class="ruby-ivar">@files</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-constant">Find</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@resource</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">file?</span><span class="ruby-identifier">f</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">f</span>) <span class="ruby-operator">=~</span> <span class="ruby-node">/(#{test[0..-2]})$/i</span>
+          <span class="ruby-ivar">@files</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">f</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">f</span>)<span class="ruby-operator">=~</span><span class="ruby-node">/#{$config['crawler']['exceptions']}/i</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-ivar">@files</span>
   <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>

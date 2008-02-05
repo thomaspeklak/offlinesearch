@@ -5,14 +5,44 @@
 
 <html>
 <head>
-  <title>get_files (Temporary_Storage::Sqlite)</title>
+  <title>new (Temporary_Storage::Sqlite)</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 249</span>
-    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_files</span>
-      <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-value str">&quot;select * from files f join files_term ft on f.id = ft.id&quot;</span>)
+  <pre><span class="ruby-comment cmt"># File temporary_storage.rb, line 189</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">db</span>)
+      <span class="ruby-identifier">require</span> <span class="ruby-value str">'rubygems'</span>
+      <span class="ruby-identifier">require</span> <span class="ruby-value str">'sqlite3'</span>
+      <span class="ruby-ivar">@current_file_id</span> = <span class="ruby-keyword kw">nil</span>
+      <span class="ruby-keyword kw">begin</span>
+        <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">db</span>)
+      <span class="ruby-keyword kw">rescue</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-ivar">@db</span> = <span class="ruby-constant">SQLite3</span><span class="ruby-operator">::</span><span class="ruby-constant">Database</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">db</span>)
+      <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">type_translation</span> = <span class="ruby-keyword kw">true</span>
+      <span class="ruby-identifier">sql</span> = <span class="ruby-value str">&quot;        
+        create table files( 
+          id integer not null primary key autoincrement,
+          filename varchar2(255), 
+          title varchar2(255), 
+          pagerank integer
+        );
+        create table terms(
+          id integer not null primary key autoincrement,
+          term varchar2(255) unique not null
+        );
+        create table files_terms(
+          file_id integer not null,
+          term_id integer not null,
+          rank integer not null
+        );
+        create table links(
+          link varchar2(255) not null primary key,
+          links_in integer
+        )
+        &quot;</span>
+      <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">execute_batch</span>(<span class="ruby-identifier">sql</span>)
     <span class="ruby-keyword kw">end</span></pre>
 </body>
 </html>
