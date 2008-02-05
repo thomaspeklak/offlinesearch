@@ -108,7 +108,7 @@ class Crawler
     def split_and_store()
       get_texts.each do |text_block|
         rank=text_block.semantic_value
-        text_block.to_s.downcase.decode_html_entities.split(/[^a-zA-ZäöüÄÖÜß]/).each do |term|
+        text_block.to_s.downcase.umlaut_to_downcase.decode_html_entities.split(/[^a-zäöüß]/).each do |term|
           @storage.store_term(term,rank) unless (term.size < 2 || $stop_words.has_key?(term))
         end
       end

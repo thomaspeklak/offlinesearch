@@ -1,7 +1,6 @@
 FEATURES
 	- implement output encoding of search base
 	- switch to integrate jquery or link to external
-	- search relation to path
 	- pagination in search
 	
 BUGS
@@ -17,3 +16,4 @@ DOME
 - rank headers higher
 - page rank should not multiply result - try addition
 - implement stop word list
+- search relation to path

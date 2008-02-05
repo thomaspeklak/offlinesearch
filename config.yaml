@@ -22,7 +22,7 @@ crawler:
     a: 3
 logger:
   file: STDOUT
-  level: info
+  level: error
 search_generator:
   search_data_file: out/search_data.js
   output_encoding: uft-8

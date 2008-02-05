@@ -35,10 +35,11 @@ $(document).ready(function(){
 	};
 	$.getResultsForTerm = function(term){
 		var exact_term = /^["'][^"']+["']$/.test(term);
+		term = term.replace(/["']/g,'');
 		if(exact_term)
-			return $.exactSearch(term.replace(/["']/g));
+			return $.exactSearch(term);
 		else
-		return $.mergeResultArrays($.exactSearch(term.replace(/["']/g)),$.fuzzySearch(eval('/'+term+'/')));
+		return $.mergeResultArrays($.exactSearch(term),$.fuzzySearch(eval('/'+term+'/')));
 	}
 	$.exactSearch = function(searchTerm){
 		var results=new Array();
@@ -50,7 +51,7 @@ $(document).ready(function(){
 			else
 				results[id]=[terms[searchTerm][docs][1]*1.5+file[2],file[1],file[0]];
 		}
-		return results;		
+		return results;
 	}
 	$.fuzzySearch = function(searchTerm){
 		var foundTerms = new Array();
