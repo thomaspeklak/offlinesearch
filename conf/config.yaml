@@ -1,10 +1,10 @@
 language: english
 storage: memory
 crawler:
-  docpath: test/D
+  docpath: ../test/D
   docs: [html, htm]
   exceptions: _dab
-  stopwords: stopwords.txt
+  stopwords: ../conf/stopwords.txt
   tags:
     title: 60
     h1: 40
@@ -24,8 +24,8 @@ logger:
   file: STDOUT
   level: error
 search_generator:
-  search_data_file: out/search_data.js
+  search_data_file: ../out/search_data.js
   output_encoding: uft-8
   template: base
   relative_path_to_files: D
-  output_frequency_to: out/frequency.txt
+  output_frequency_to: ../out/frequency.txt
