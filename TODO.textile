@@ -1,12 +1,18 @@
-FEATURES
-	- implement output encoding of search base
-	- switch to integrate jquery or link to external
-	- pagination in search
-	
 BUGS
 
 TODOS
-	implement unit tests
+- GEM
+	- config through args
+	- default config generation
+	- default stopwords generation
+	- exit if required config args are not filled out
+	- check if output dir exits
+	- default stopword list on specified language, if none specified
+	
+- implement unit tests
+- pagination in search
+- implement output encoding of search base
+- switch to integrate jquery or link to external
 	
 DOME
 - remove beginnig of path
