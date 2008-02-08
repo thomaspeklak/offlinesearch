@@ -6,11 +6,11 @@
 #
 
 require "YAML"
-$config = YAML.load_file("../conf/config.yaml")
+$config = YAML.load_file(File.dirname(__FILE__) + '/../conf/config.yaml')
 
 require "log_init"
 
-require 'stop_words'
+require "stop_words"
 
 
 

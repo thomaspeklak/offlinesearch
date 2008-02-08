@@ -1,7 +1,7 @@
 language: english
 storage: memory
 crawler:
-  docpath: ../test/D
+  docpath: ../test/Umlaut
   docs: [html, htm]
   exceptions: _dab
   stopwords: ../conf/stopwords.txt
@@ -22,7 +22,7 @@ crawler:
     a: 3
 logger:
   file: STDOUT
-  level: error
+  level: info
 search_generator:
   search_data_file: ../out/search_data.js
   output_encoding: uft-8
