@@ -6,7 +6,7 @@
 #
 
 require "YAML"
-$config = YAML.load_file(File.dirname(__FILE__) + '/../conf/config.yaml')
+$config = YAML.load_file(File.dirname(__FILE__) + '/config.yaml')
 
 require "log_init"
 
