@@ -4,7 +4,7 @@ crawler:
   docpath: ../docs
   docs: [html, htm]
   exceptions: _dab
-  stopwords: stopwords.txt
+  stopwords: 
   tags:
     title: 60
     h1: 40
