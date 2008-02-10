@@ -5,8 +5,8 @@
 # * $LastChangedDate$
 #
 
-require "YAML"
-$config = YAML.load_file(File.dirname(__FILE__) + '/config.yaml')
+require 'option_parser'
+require 'option_validator'
 
 require "log_init"
 
