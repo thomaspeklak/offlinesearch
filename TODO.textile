@@ -2,11 +2,7 @@ BUGS
 
 TODOS
 - GEM
-	- default config generation
-	- default stopwords generation
-	- exit if required config args are not filled out
 	- check if output dir exits
-	- default stopword list on specified language, if none specified
 	
 - implement unit tests
 - pagination in search
@@ -23,3 +19,7 @@ DOME
 - implement stop word list
 - search relation to path
 - config through args
+- default stopword list on specified language, if none specified
+- exit if required config args are not filled out
+- default config generation
+- default stopwords generation

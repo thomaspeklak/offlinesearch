@@ -7,6 +7,7 @@
 require "YAML"
 
 require 'optparse'
+$config = Hash.new
 OptionParser.new do |opts|
   opts.banner = "Usage: OfflineSearch [options]"
   opts.on('-c', '--config=CONFIG_FILE', String,'configuration file for the offline search') do |c|
@@ -28,9 +29,19 @@ OptionParser.new do |opts|
     $config['search_generator']['search_data_file'] = f
   end
   opts.on('-s', '--stopword-list=STOPWORD_LIST', String,'stopword list, if none is specified the default stop word list is used') do |s|
-    puts $config['crawler']['stopwords']
     $config['crawler']['stopwords'] = s
-    puts $config['crawler']['stopwords']
+  end
+  opts.on('-l','--language=LANGUAGE',String,'required if you want to generate a default stopword list') do |l|
+    $config['language'] = l
+  end  
+  opts.separator ""
+  opts.separator "Generators"
+  opts.on('-g','--generate-default-config') do
+    require 'generate_default_config'
+    exit
+  end
+  opts.on('-w','--generate-default-stopwords') do
+    $config['generate_default_stopwords'] = true
   end
   opts.separator ""
   opts.on_tail('-h','--help','Show this message') do
@@ -42,6 +53,11 @@ OptionParser.new do |opts|
     exit
   end
 end.parse!
+
+if($config['generate_default_stopwords'])
+  require 'generate_default_stopwords'
+  exit
+end
 
 if ($config['crawler']['stopwords'].nil?) then
   $config['crawler']['stopwords'] = File.dirname(__FILE__) +"/stoplist/#{$config['language']}/stopwords.txt"

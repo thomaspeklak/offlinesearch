@@ -1,0 +1,31 @@
+language: english
+storage: memory
+crawler:
+  docpath: ../docs
+  docs: [html, htm]
+  exceptions: 
+  stopwords: 
+  tags:
+    title: 60
+    h1: 40
+    h2: 25
+    h3: 18
+    h4: 13
+    h5: 11
+    h6: 9
+    strong: 7
+    b: 7
+    em: 5
+    i: 5
+    dt: 9
+    u: 4
+    a: 3
+logger:
+  file: STDOUT
+  level: info
+search_generator:
+  search_data_file: search_data_js
+  output_encoding: uft-8
+  template: base
+  relative_path_to_files: 
+  output_frequency_to: frequency.txt

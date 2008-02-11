@@ -10,7 +10,7 @@ class OptionValidator
     language = ['german','english']
 
     unless(language.include?($config['language']))
-      puts 'storage must be memory or sqlite'
+      puts 'language must be english or german'
       exit
     end
     unless(storage.include?($config['storage']))
