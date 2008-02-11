@@ -7,6 +7,7 @@
 
 require 'option_parser'
 require 'option_validator'
+OptionValidator.new
 
 require "log_init"
 

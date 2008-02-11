@@ -2,7 +2,6 @@ BUGS
 
 TODOS
 - GEM
-	- config through args
 	- default config generation
 	- default stopwords generation
 	- exit if required config args are not filled out
@@ -23,3 +22,4 @@ DOME
 - page rank should not multiply result - try addition
 - implement stop word list
 - search relation to path
+- config through args

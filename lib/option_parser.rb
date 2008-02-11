@@ -44,5 +44,5 @@ OptionParser.new do |opts|
 end.parse!
 
 if ($config['crawler']['stopwords'].nil?) then
-  $config['crawler']['stopwords'] = File.dirname(__FILE__) +'/stopwords.txt'
+  $config['crawler']['stopwords'] = File.dirname(__FILE__) +"/stoplist/#{$config['language']}/stopwords.txt"
 end

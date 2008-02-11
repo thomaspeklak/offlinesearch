@@ -1,4 +1,4 @@
-language: english
+language: german
 storage: memory
 crawler:
   docpath: ../docs

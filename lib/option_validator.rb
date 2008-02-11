@@ -4,18 +4,26 @@
 # * $Rev$
 # * $LastChangedDate$
 #
-storage = ['memory','sqlite']
+class OptionValidator  
+  def initialize
+    storage = ['memory','sqlite']
+    language = ['german','english']
 
-
-unless(storage.include?($config['storage']))
-  puts 'storage must be memory or sqlite'
-  exit
-end
-unless($config['crawler']['docs'].size>0)
-  puts 'doc types must be specified'
-  exit
-end
-unless (File.exists?($config['crawler']['stopwords']))
-  puts 'stopwords file does not exist'
-  exit
+    unless(language.include?($config['language']))
+      puts 'storage must be memory or sqlite'
+      exit
+    end
+    unless(storage.include?($config['storage']))
+      puts 'storage must be memory or sqlite'
+      exit
+    end
+    unless($config['crawler']['docs'].size>0)
+      puts 'doc types must be specified'
+      exit
+    end
+    unless (File.exists?($config['crawler']['stopwords']))
+      puts 'stopwords file does not exist'
+      exit
+    end
+  end
 end
