@@ -2,7 +2,9 @@ BUGS
 
 TODOS
 - GEM
-	- check if output dir exits
+	- check if dir exits
+	- generate template
+	- split option parser and action controller
 	
 - implement unit tests
 - pagination in search
