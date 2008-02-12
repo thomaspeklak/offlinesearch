@@ -4,10 +4,14 @@
 # * $Rev$
 # * $LastChangedDate$
 #
-class OptionValidator  
+class OptionValidator
   def initialize
     storage = ['memory','sqlite']
     language = ['german','english']
+
+    if ($config['crawler']['stopwords'].nil?) then
+      $config['crawler']['stopwords'] = File.dirname(__FILE__) +"/stoplist/#{$config['language']}/stopwords.txt"
+    end
 
     unless(language.include?($config['language']))
       puts 'language must be english or german'

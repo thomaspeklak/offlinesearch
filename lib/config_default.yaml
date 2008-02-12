@@ -24,7 +24,7 @@ logger:
   file: STDOUT
   level: info
 search_generator:
-  search_data_file: search_data_js
+  search_data_file: search_data.js
   output_encoding: uft-8
   template: base
   relative_path_to_files: 

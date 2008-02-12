@@ -6,4 +6,4 @@
 #
 require 'fileutils'
 include FileUtils
-cp(File.dirname(__FILE__)+'config.yaml','./')
+cp(File.dirname(__FILE__)+'/config_default.yaml','./')

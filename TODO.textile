@@ -3,8 +3,7 @@ BUGS
 TODOS
 - GEM
 	- check if dir exits
-	- generate template
-	- split option parser and action controller
+	- multiple exceptions
 	
 - implement unit tests
 - pagination in search
@@ -25,3 +24,5 @@ DOME
 - exit if required config args are not filled out
 - default config generation
 - default stopwords generation
+- split option parser and action controller
+- generate template

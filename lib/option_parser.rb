@@ -13,6 +13,7 @@ OptionParser.new do |opts|
   opts.on('-c', '--config=CONFIG_FILE', String,'configuration file for the offline search') do |c|
     if (File.exists?(c))
       $config = YAML.load_file(c)
+      $action = 'generate_search'
     else
       puts 'config file not found'
       exit      
@@ -37,11 +38,13 @@ OptionParser.new do |opts|
   opts.separator ""
   opts.separator "Generators"
   opts.on('-g','--generate-default-config') do
-    require 'generate_default_config'
-    exit
+    $action = 'generate_default_config'
   end
   opts.on('-w','--generate-default-stopwords') do
-    $config['generate_default_stopwords'] = true
+    $action = 'generate_default_stopwords'
+  end
+  opts.on('-t','--generate-template') do
+    $action = 'generate_template'
   end
   opts.separator ""
   opts.on_tail('-h','--help','Show this message') do
@@ -53,12 +56,3 @@ OptionParser.new do |opts|
     exit
   end
 end.parse!
-
-if($config['generate_default_stopwords'])
-  require 'generate_default_stopwords'
-  exit
-end
-
-if ($config['crawler']['stopwords'].nil?) then
-  $config['crawler']['stopwords'] = File.dirname(__FILE__) +"/stoplist/#{$config['language']}/stopwords.txt"
-end

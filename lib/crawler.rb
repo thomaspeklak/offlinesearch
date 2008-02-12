@@ -32,9 +32,13 @@ class Crawler
     Find.find(@resource) do |f|
       if FileTest.file?f
         if File.basename(f) =~ /(#{test[0..-2]})$/i
-          @files.push(f) unless File.basename(f)=~/#{$config['crawler']['exceptions']}/i
+          @files.push(f) unless $config['crawler']['exceptions']!=nil && File.basename(f)=~/#{$config['crawler']['exceptions']}/i
         end
       end
+    end
+    if (@files.empty?)
+      puts 'no files found in directory'
+      exit
     end
     @files
   end
