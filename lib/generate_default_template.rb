@@ -18,7 +18,8 @@ class TemplateGenerator
   # returns an array of files
   def find_files()
     require 'find'
-    directory = File.dirname(__FILE__) + @template
+    directory = File.dirname(__FILE__) + '/../templates/' + @template
+    puts directory
     @files = Array.new()
     Find.find(directory) do |f|
       if FileTest.file?f
@@ -31,9 +32,8 @@ class TemplateGenerator
   #copies the found files in the current path
   def copy_files_to_current_path()
     require 'fileutils'
-    include FileUtils
     @files.each do |f|
-      cp(f,'./')
+      FileUtils::cp(f,'./')
     end
   end
 end
