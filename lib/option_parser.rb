@@ -13,11 +13,24 @@ OptionParser.new do |opts|
   opts.on('-c', '--config=CONFIG_FILE', String,'configuration file for the offline search') do |c|
     if (File.exists?(c))
       $config = YAML.load_file(c)
-      $action = 'generate_search'
     else
       puts 'config file not found'
       exit      
     end
+  end
+  opts.separator ""
+  opts.separator "Generators"
+  opts.on('-g','--generate-default-config','creates a default config file in the current directory') do
+    $action = 'generate_default_config'
+  end
+  opts.on('-w','--generate-default-stopwords','creates a default stopword list in the current directory. Language flag is required.') do
+    $action = 'generate_default_stopwords'
+  end
+  opts.on('-t','--generate-template','creates search template files in the current directory') do
+    $action = 'generate_template'
+  end
+  opts.on('-o','--generate-search-data','crawler the documents in the given docpath and generates the search data file') do
+    $action = 'generate_search'
   end
   opts.separator ""
   opts.separator "Optional arguments"
@@ -35,17 +48,6 @@ OptionParser.new do |opts|
   opts.on('-l','--language=LANGUAGE',String,'required if you want to generate a default stopword list') do |l|
     $config['language'] = l
   end  
-  opts.separator ""
-  opts.separator "Generators"
-  opts.on('-g','--generate-default-config') do
-    $action = 'generate_default_config'
-  end
-  opts.on('-w','--generate-default-stopwords') do
-    $action = 'generate_default_stopwords'
-  end
-  opts.on('-t','--generate-template') do
-    $action = 'generate_template'
-  end
   opts.separator ""
   opts.on_tail('-h','--help','Show this message') do
     puts opts
