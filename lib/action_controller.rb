@@ -1,8 +1,8 @@
 # 
 #
-# * $Author: tom $
-# * $Rev: 100 $
-# * $LastChangedDate: 2008-02-11 18:21:07 +0100 (Mon, 11 Feb 2008) $
+# * $Author$
+# * $Rev$
+# * $LastChangedDate$
 #
 
 class ActionController

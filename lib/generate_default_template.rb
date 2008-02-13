@@ -1,9 +1,9 @@
 # generates template files
 # currently only one template is supported
 #
-# * $Author: tom $
-# * $Rev: 102 $
-# * $LastChangedDate: 2008-02-12 16:42:20 +0100 (Tue, 12 Feb 2008) $
+# * $Author$
+# * $Rev$
+# * $LastChangedDate$
 #
 
 class TemplateGenerator
