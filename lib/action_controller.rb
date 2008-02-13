@@ -1,4 +1,5 @@
-# 
+# ACTION CONTROLLER
+# checks which option is specified and executes the required scripts
 #
 # * $Author$
 # * $Rev$
@@ -6,7 +7,14 @@
 #
 
 class ActionController
+  # checks the value of the global variable $action set by option parser
+  # valid actions are
+  # * genrating a default stopwords
+  # * genrating a default config file
+  # * genrating a template
+  # * genrating the search database
   def initialize()
+    require "log_init"
     case $action
     when 'generate_default_stopwords'
       generate_stopwords
@@ -39,7 +47,6 @@ class ActionController
     OptionValidator.new
   end
   def start_search
-    require "log_init"
     require "stop_words"
     require "crawler"
     require "search_generator"
