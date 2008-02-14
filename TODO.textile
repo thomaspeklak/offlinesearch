@@ -1,16 +1,42 @@
 BUGS
 
 TODOS
-- GEM
-	- check if dir exits
-	- multiple exceptions
-	
-- implement unit tests
+
+crawler
+- include FileFinder gem instead of own class
+
+exceptions
+- give meaningful error messages
+
+config:
+- check if dir exits
+- multiple exceptions
+- deep config check
+
+template
+- prototype template
+- mootools template
+- dojo template
+
 - pagination in search
-- implement output encoding of search base
-- switch to integrate jquery or link to external
-	
+- soundex if no match is found - 'did you mean...'
+
+test:
+- implement unit tests
+	- entity_converter
+
+search data
+- implement output encoding of search base => template conversion in correct encoding
+
+entity converter
+- entity converter should be easily extendable - mayby through own config file
+
+==============================================================
+
 DOME
+version 0.0.8
+
+version 0.0.6
 - remove beginnig of path
 - include dash as possible search character or term seperator  = > terms are seperated by word boundary
 - quotes on multiple words "test check" => "test" "check"
