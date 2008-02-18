@@ -2,15 +2,11 @@ BUGS
 
 TODOS
 
-crawler
-- include FileFinder gem instead of own class
-
 exceptions
 - give meaningful error messages
 
 config:
-- check if dir exits
-- multiple exceptions
+- multiple exceptions <- generate with FileFinder method
 - deep config check
 
 template
@@ -19,7 +15,7 @@ template
 - dojo template
 
 - pagination in search
-- soundex if no match is found - 'did you mean...'
+- double metaphone algorithm if no match is found - 'did you mean...'
 
 test:
 - implement unit tests
@@ -31,10 +27,19 @@ search data
 entity converter
 - entity converter should be easily extendable - mayby through own config file
 
+output
+- enable database support + ajax interface
+
+crawler
+- html finder -> find files through html links
+
 ==============================================================
 
 DOME
+version 0.1.0
+
 version 0.0.8
+- check if dir exits
 
 version 0.0.6
 - remove beginnig of path

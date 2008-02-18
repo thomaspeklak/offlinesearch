@@ -6,12 +6,12 @@
 # * $Rev$
 # * $LastChangedDate$
 
-require 'find'
 require 'rexml/document'
 require 'rubygems'
 require 'hpricot'
 require 'Kconv'
 require 'entity_converter'
+require 'filefinder'
 
 class Crawler
   attr_writer :resource
@@ -25,17 +25,7 @@ class Crawler
   # serach the given docpath for files with a valid extension and excludes files that should not be indexed
   # returns an array of files
   def find_files()
-    filter=$config['crawler']['docs']
-    test=''
-    filter.each { |fi|  test+=".*#{fi}|"}
-    @files = Array.new()
-    Find.find(@resource) do |f|
-      if FileTest.file?f
-        if File.basename(f) =~ /(#{test[0..-2]})$/i
-          @files.push(f) unless $config['crawler']['exceptions']!=nil && File.basename(f)=~/#{$config['crawler']['exceptions']}/i
-        end
-      end
-    end
+    @files = FileFinder::find(@resource,:types=>$config['crawler']['docs'],:excludes=>$config['crawler']['exceptions'])
     if (@files.empty?)
       puts 'no files found in directory'
       exit

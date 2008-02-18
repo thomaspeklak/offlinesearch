@@ -1,4 +1,9 @@
 # extends the string class to convert html entities
+# use carefully, can not convert entities back, as some entities are just skipped, because the are not useful for the search generation process
+#
+# * $Author$
+# * $Rev$
+# * $LastChangedDate$
 
 class String
   # this method converts encoded entities to their utf-8 euqivalent. be careful this method strips out all unknown entities because they are of no special use for the semantic search

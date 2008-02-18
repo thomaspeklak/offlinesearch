@@ -29,5 +29,26 @@ class OptionValidator
       puts 'stopwords file does not exist'
       exit
     end
+    
+    unless (directory_exists?($config['crawler']['docpath']))
+      puts 'docpath does not exist'
+    end
+    
+    unless (base_directory_exists?($config['search_generator']['search_data_file']))
+      puts 'path to the search data file does not exits. Please create the directory first'
+    end
+    
+    unless (base_directory_exists?($config['search_generator']['output_frequency_to']))
+      puts 'path to the frequency file does not exits. Please create the directory first'
+    end
+    
   end
+  
+  private
+  def base_directory_exists?(file)
+    FileTest.directory?(File.dirname(file))
+  end 
+  def directory_exists?(dir)
+    FileTest.directory?(dir)
+  end 
 end
