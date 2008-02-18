@@ -10,7 +10,7 @@ include FileUtils
 
 language = ['german','english']
 unless(defined?($config) && language.include?($config['language']))
-  puts 'language must be english or german'
+  $logger.error('language must be english or german')
   exit
 end
 

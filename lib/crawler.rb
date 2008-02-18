@@ -27,7 +27,7 @@ class Crawler
   def find_files()
     @files = FileFinder::find(@resource,:types=>$config['crawler']['docs'],:excludes=>$config['crawler']['exceptions'])
     if (@files.empty?)
-      puts 'no files found in directory'
+      $logger.error('no files found in directory')
       exit
     end
     @files

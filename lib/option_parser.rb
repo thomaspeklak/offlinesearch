@@ -14,7 +14,7 @@ OptionParser.new do |opts|
     if (File.exists?(c))
       $config = YAML.load_file(c)
     else
-      puts 'config file not found'
+      $logger.error('config file not found')
       exit      
     end
   end

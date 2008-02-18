@@ -15,6 +15,10 @@ class ActionController
   # * genrating the search database
   def initialize()
     require "log_init"
+    unless defined?($action)
+      $logger.fatal("No action is defined. Please chose one of the following options:\n\t\t-o generate search index\n\t\t-t generate template files\n\t\t-o generate default stop words\n\t\t-g generate default config")
+      exit
+    end
     case $action
     when 'generate_default_stopwords'
       generate_stopwords

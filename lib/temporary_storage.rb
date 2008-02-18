@@ -19,7 +19,7 @@ class Temporary_Storage
       when mode=='sqlite': Sqlite.new('storage.db')
       when mode=='memory': Memory.new
       else
-        puts "no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory"
+        $logger.error("no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory")
         exit
     end
   end

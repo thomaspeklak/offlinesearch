@@ -14,34 +14,33 @@ class OptionValidator
     end
 
     unless(language.include?($config['language']))
-      puts 'language must be english or german'
+      $logger.error('language must be english or german')
       exit
     end
     unless(storage.include?($config['storage']))
-      puts 'storage must be memory or sqlite'
+      $logger.error('storage must be memory or sqlite')
       exit
     end
     unless($config['crawler']['docs'].size>0)
-      puts 'doc types must be specified'
+      $logger.error('doc types must be specified')
       exit
     end
     unless (File.exists?($config['crawler']['stopwords']))
-      puts 'stopwords file does not exist'
+      $logger.error('stopwords file does not exist')
       exit
     end
     
     unless (directory_exists?($config['crawler']['docpath']))
-      puts 'docpath does not exist'
+      $logger.error('docpath does not exist')
     end
     
     unless (base_directory_exists?($config['search_generator']['search_data_file']))
-      puts 'path to the search data file does not exits. Please create the directory first'
+      $logger.error('path to the search data file does not exits. Please create the directory first')
     end
     
     unless (base_directory_exists?($config['search_generator']['output_frequency_to']))
-      puts 'path to the frequency file does not exits. Please create the directory first'
+      $logger.error('path to the frequency file does not exits. Please create the directory first')
     end
-    
   end
   
   private

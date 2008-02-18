@@ -6,16 +6,17 @@ exceptions
 - give meaningful error messages
 
 config:
-- multiple exceptions <- generate with FileFinder method
 - deep config check
 
 template
+- double metaphone algorithm if no match is found - 'did you mean...'
+
 - prototype template
 - mootools template
 - dojo template
 
 - pagination in search
-- double metaphone algorithm if no match is found - 'did you mean...'
+
 
 test:
 - implement unit tests
@@ -37,6 +38,9 @@ crawler
 
 DOME
 version 0.1.0
+- multiple exceptions <- generate with FileFinder method
+- filefinder implemented in crawler
+- config check if no generate option is specified
 
 version 0.0.8
 - check if dir exits
