@@ -1,1 +1,61 @@
-General description of os
+==OfflineSearch
+OfflineSearch is a semantic offline search generator. It scans a directory of html files and generates a javascript search data file.
+
+===Executable:
+ OfflineSearch
+
+===Usage:
+OfflineSearch [options]
+    -c, --config=CONFIG_FILE         configuration file for the offline search
+
+Generators
+    -g, --generate-default-config    creates a default config file in the current directory
+    -w, --generate-default-stopwords creates a default stopword list in the current directory. Language flag is required.
+    -t, --generate-template          creates search template files in the current directory
+    -o, --generate-search-data       crawler the documents in the given docpath and generates the search data file
+
+Optional arguments
+can also be specified in the config file
+command line arguments will overwrite any given value in the config file
+    -d, --docpath=DOCPATH            path of the documents
+    -f=SEARCH_DATA_FILE              path and name of the search data file
+        --search-data-file
+    -s=STOPWORD_LIST                 stopword list, if none is specified the default stop word list is used
+        --stopword-list
+    -l, --language=LANGUAGE          required if you want to generate a default stopword list
+
+    -h, --help                       Show this message
+
+===Config-File example:
+
+	language: english
+	storage: memory
+	crawler:
+	  docpath: ../docs
+	  docs: [html, htm]
+	  exceptions: 
+	  stopwords: 
+	  tags:
+	    title: 60
+	    h1: 40
+	    h2: 25
+	    h3: 18
+	    h4: 13
+	    h5: 11
+	    h6: 9
+	    strong: 7
+	    b: 7
+	    em: 5
+	    i: 5
+	    dt: 9
+	    u: 4
+	    a: 3
+	logger:
+	  file: STDOUT
+	  level: info
+	search_generator:
+	  search_data_file: search_data.js
+	  output_encoding: uft-8
+	  template: base
+	  relative_path_to_files: 
+	  output_frequency_to: frequency.txt

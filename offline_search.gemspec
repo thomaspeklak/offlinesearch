@@ -17,6 +17,8 @@ SPEC = Gem::Specification.new do |s|
   s.has_rdoc = true 
   s.extra_rdoc_files = ["README"] 
   s.add_dependency("hpricot", ">= 0.6")
+  s.add_dependency("Text", ">= 1.1.2")
+  s.add_dependency("filefinder", ">= 0.0.4")
   s.bindir = 'bin'
   s.executables = ['OfflineSearch']
 end
