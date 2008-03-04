@@ -44,7 +44,7 @@ class ActionController
   def generate_template
 		$logger.info("generating default template")
     require 'generate_default_template'
-    TemplateGenerator.new('base')
+    TemplateGenerator.new('base+double_metaphone')
   end
   def verify_search_parameters
     require 'option_validator'

@@ -5,7 +5,7 @@
  */
 
 $(document).ready(function(){
-	$('#search').keydown(function(e){
+	$('#search').keyup(function(e){
 		if(e.keyCode == 13){
 			$('#search_results').show_results(this.value.toLowerCase());
 			return false;
@@ -19,19 +19,37 @@ $(document).ready(function(){
 			searchValue = $.quoteSearch(searchValue);
 		var searchTerms = searchValue.split(/[ _\-\(\)]/);
 		var results=new Array();
+		var no_results = new Array();
+		var temp_result;
 		for (term in searchTerms){
 			if(searchTerms[term].length > 1){
-				if (results.length)
-					results = $.intersectResultsArrays(results,$.getResultsForTerm(searchTerms[term]))
-				else
-					results = $.getResultsForTerm(searchTerms[term]);
+				temp_result = $.getResultsForTerm(searchTerms[term]);
+				if(temp_result.length)
+				{
+					if (results.length)
+						results = $.intersectResultsArrays(results,temp_result);
+					else
+						results = temp_result;
+				}
+				else{
+					no_results.push(searchTerms[term]);
+					}
 			}
 		}
-		results.sort($.sortByFirstValue);
-		output= new Array();
-		while(r = results.shift())
-			output.push('<li><span>'+r[0]+'</span><a href="'+rel_path+r[1]+'">'+r[2]+'</a>');
-		this.html('<ol>'+output.join('')+'</ol>');
+		var output= new Array();
+		if(results.length && !no_results.length){
+			results.sort($.sortByFirstValue);
+			while(r = results.shift())
+				output.push('<li><span>'+r[0]+'</span><a href="'+rel_path+r[1]+'">'+r[2]+'</a>');
+			this.html('<ol>'+output.join('')+'</ol>');
+		}
+		else{
+			output.push('<p>No results found for:</p><ul>');
+			for(var t in no_results){
+				output.push('<li><strong>'+no_results[t]+'</strong> (possible alternatives:'+$.doubleMetaphoneCheck(no_results[t].doubleMetaphone())+')</li>');
+				}
+			this.html(output.join('')+'</ul>');
+		}
 	};
 	$.getResultsForTerm = function(term){
 		var exact_term = /^["'][^"']+["']$/.test(term);
@@ -92,6 +110,15 @@ $(document).ready(function(){
 				value = value.replace(/["'].*[^"'][ _\-\(\)][^"'].*["']/,"'"+terms.join("' '")+"'");
 			}
 		return value;
+	};
+	
+	$.doubleMetaphoneCheck = function(dm){
+		var result = [];
+		for(i in dm_data){
+			if(dm_data[i][0]==dm[0] || dm_data[i][0]==dm[1] || dm_data[i][1]==dm[0] || (dm_data[i][1]==dm[1] && dm[1] && dm_data[i][1]))
+				result.push(i);
+		}
+		return result;
 	};
 	
 })(jQuery);
