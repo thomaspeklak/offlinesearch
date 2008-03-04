@@ -9,7 +9,6 @@ config:
 - deep config check
 
 template
-- double metaphone algorithm if no match is found - 'did you mean...'
 
 - prototype template
 - mootools template
@@ -37,6 +36,9 @@ crawler
 ==============================================================
 
 DOME
+version 0.1.2
+- double metaphone algorithm if no match is found - 'did you mean...'
+
 version 0.1.0
 - multiple exceptions <- generate with FileFinder method
 - filefinder implemented in crawler

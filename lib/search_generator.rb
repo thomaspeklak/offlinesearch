@@ -20,6 +20,7 @@ class SearchGenerator
     generate_files
     generate_relative_path
     generate_frequency_file if ($config['search_generator']['output_frequency_to'])
+    generate_double_metaphone if ($config['search_generator']['use_double_matephone'] && $config['search_generator']['use_double_matephone'] == true)
     cleanup    
   end
   
@@ -37,7 +38,7 @@ class SearchGenerator
       docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "[#{doc_ID},#{rank}],"}
       out << "],"
     end
-    @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-2] + "}"
+    @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-2] + "};"
   end
   
   # generates a javascript hash of file ids => title, file name, pagerank
@@ -48,7 +49,7 @@ class SearchGenerator
     @files.each_value do |f|
       out << "#{f.ID}:['#{f.title}','#{f.name}',#{f.page_rank}],"
     end
-    @search_data_file.puts out.join[0..-2] + "}"    
+    @search_data_file.puts out.join[0..-2] + "};"    
   end
   
   # stores the relative path in a vairable
@@ -65,6 +66,18 @@ class SearchGenerator
       end
       
     end
+  end
+  
+  def generate_double_metaphone()
+    $logger.info("generating double metaphone data")
+    require 'Text'
+    out = Array.new
+    out << 'var dm_data = {'
+    @terms.each do |t,r|
+      temp =  Text::Metaphone.double_metaphone(t)
+      out <<  "'#{t}':['#{temp[0]}',#{(temp[1])? '\''+temp[1]+'\'':'null'}],"
+    end
+    @search_data_file.puts out.join[0..-2] + "};"
   end
   
   # performs cleanup operations

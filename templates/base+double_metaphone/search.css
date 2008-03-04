@@ -1,0 +1,8 @@
+/*
+ * $Author: tom $
+ * $Revision: 76 $
+ * $LastChangedDate: 2008-01-28 07:39:37 +0100 (Mon, 28 Jan 2008) $
+ */
+
+body{font:normal 75% 'Lucida Grande', Verdana;}
+ol li span{display:block;float:left;width:50px;clear:both;padding:0 10px;text-align:right;}
