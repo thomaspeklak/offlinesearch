@@ -6,7 +6,7 @@
 #
 
 require 'logger'
-if ($config.empty?)
+unless ($config.has_key?('logger'))
   $logger = Logger.new(STDOUT)
   $logger.level = Logger::INFO
 else

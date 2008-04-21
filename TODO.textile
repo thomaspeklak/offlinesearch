@@ -36,6 +36,13 @@ crawler
 ==============================================================
 
 DOME
+version 0.1.4
+- major load performance gain of javascript database file due to database reorganization. Less nested arrays gave a huge speed boost 10s -> 0.6s
+- template refactoring
+- template selection through option
+
+* BUGFIX: template + stopword generators did not work
+
 version 0.1.2
 - double metaphone algorithm if no match is found - 'did you mean...'
 

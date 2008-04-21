@@ -35,10 +35,11 @@ class SearchGenerator
       out << "'#{term}':["
       docs = Hash.new
       reference.each { |r| docs.has_key?(r.document.ID)? docs[r.document.ID]+=r.rank : docs[r.document.ID] = r.rank }
-      docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "[#{doc_ID},#{rank}],"}
+			# because of a javascript performance issue with nested arrays, the page id and the page rank are put into a string and split in the javascript search an demand
+      docs.sort{ |a,b| a[1]<=>b[1]}.reverse.each{ |doc_ID, rank| out << "'#{doc_ID}-#{rank}',"}
       out << "],"
     end
-    @search_data_file.puts out.join.gsub(/\],\],/,']],')[0..-2] + "};"
+    @search_data_file.puts out.join.gsub(',]',']')[0..-2] + "};"
   end
   
   # generates a javascript hash of file ids => title, file name, pagerank
@@ -47,7 +48,7 @@ class SearchGenerator
     out = Array.new
     out << "var files = {"
     @files.each_value do |f|
-      out << "#{f.ID}:['#{f.title}','#{f.name}',#{f.page_rank}],"
+      out << "#{f.ID}:['#{f.title}','#{f.name[1..-1]}',#{f.page_rank}],"
     end
     @search_data_file.puts out.join[0..-2] + "};"    
   end
@@ -55,7 +56,7 @@ class SearchGenerator
   # stores the relative path in a vairable
   def generate_relative_path
     $logger.info("generating relative path")
-    @search_data_file.puts "var rel_path = '#{$config['search_generator']['relative_path_to_files']}'" if $config['search_generator'].has_key?('relative_path_to_files')
+    @search_data_file.puts "var rel_path = '#{$config['search_generator']['relative_path_to_files'].gsub(/\/$/,'')}/';" if $config['search_generator'].has_key?('relative_path_to_files')
   end
   
   def generate_frequency_file
@@ -67,7 +68,7 @@ class SearchGenerator
       
     end
   end
-  
+
   def generate_double_metaphone()
     $logger.info("generating double metaphone data")
     require 'Text'
@@ -75,8 +76,8 @@ class SearchGenerator
     out << 'var dm_data = {'
     @terms.each do |t,r|
       temp =  Text::Metaphone.double_metaphone(t)
-      out <<  "'#{t}':['#{temp[0]}',#{(temp[1])? '\''+temp[1]+'\'':'null'}],"
-    end
+      out <<  "'#{t}':['#{temp[0]}'#{(temp[1])? ',\''+temp[1]+'\'':nil}],"
+		end
     @search_data_file.puts out.join[0..-2] + "};"
   end
   

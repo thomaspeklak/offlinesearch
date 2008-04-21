@@ -50,7 +50,7 @@ class Crawler
           doc = XmlCrawler.new(lines,file,@storage)
         rescue REXML::ParseException
           #as a fallback use hpricot
-          $logger.warn("file not valid XHTML- trying to rescue")
+          $logger.warn("not valid XHTML- trying to parse as HTML")
           #convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly
           doc = HpricotCrawler.new(lines.decode_html_entities,file,@storage)
         end

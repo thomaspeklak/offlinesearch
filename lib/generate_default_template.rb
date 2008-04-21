@@ -19,7 +19,6 @@ class TemplateGenerator
   def find_files()
     require 'find'
     directory = File.dirname(__FILE__) + '/../templates/' + @template
-    puts directory
     @files = Array.new()
     Find.find(directory) do |f|
       if FileTest.file?f

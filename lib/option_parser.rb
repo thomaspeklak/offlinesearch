@@ -26,8 +26,9 @@ OptionParser.new do |opts|
   opts.on('-w','--generate-default-stopwords','creates a default stopword list in the current directory. Language flag is required.') do
     $action = 'generate_default_stopwords'
   end
-  opts.on('-t','--generate-template','creates search template files in the current directory') do
+  opts.on('-t','--generate-template=TEMPLATE','creates search template files in the current directory. Possible values: base, base+doublemetaphone') do |t|
     $action = 'generate_template'
+		$config['template']=t
   end
   opts.on('-o','--generate-search-data','crawler the documents in the given docpath and generates the search data file') do
     $action = 'generate_search'
