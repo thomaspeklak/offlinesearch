@@ -14,10 +14,16 @@ $(document).ready(function(){
 });
 
 (function($){
+	$.lang = {
+		no_entries: 'Keine Einträge gefunden.',
+		no_entries_for: 'Für die folgende Begriffe wurden keine Einträge gefunden:',
+		possible_alternatives: 'mögliche Alternativen'
+
+	};
 	$.fn.show_results = function(searchValue){
-		if(searchValue.match(/["'].*[ _\-\(\)].*["']/))
+		if(searchValue.match(/["'].*[^a-zA-ZÄÖÜäöüß].*["']/))
 			searchValue = $.quoteSearch(searchValue);
-		var searchTerms = searchValue.split(/[ _\-\(\)]/);
+		var searchTerms = searchValue.split(/[^a-zA-ZÄÖÜäöüß]/);
 		var results=[];
 		var no_results = [];
 		var temp_result;
@@ -39,16 +45,27 @@ $(document).ready(function(){
 		var output= [];
 		if(results.length && !no_results.length){
 			results.sort($.sortByFirstValue);
+			var r;
 			while(r = results.shift())
 				output.push('<li><a href="'+rel_path+r[1]+'">'+r[2]+'</a>');
 			this.html('<ol>'+output.join('')+'</ol>');
 		}
-		else{
-			output.push('<p>Für folgende Begriffe wurden keine Ergebnisse gefunden:</p><ul>');
+		else if(no_results.length){
+			output.push('<p>'+$.lang.no_entries_for+'</p><ul>');
 			for(var t in no_results){
-				output.push('<li><strong>'+no_results[t]+'</strong> - mögliche Alternativen:<ul><li>'+$.doubleMetaphoneCheck(no_results[t].doubleMetaphone()).sort().join('</li><li>')+'</li></ul></li>');
+				output.push('<li><strong>'+no_results[t]+'</strong>');
+				var DM_check = $.doubleMetaphoneCheck(no_results[t].doubleMetaphone());
+				if(DM_check.length){
+					output.push('- '+$.lang.possible_alternatives+':<ul><li>'+DM_check.sort().join('</li><li>')+'</li></ul></li>');
 				}
+				else{
+					output.push('</li>');
+				}
+			}
 			this.html(output.join('')+'</ul>');
+		}
+		else{
+			output.push('<p><strong>'+$.lang.no_entries+'</strong></p>');
 		}
 	};
 	$.getResultsForTerm = function(term){
@@ -90,11 +107,11 @@ $(document).ready(function(){
 			}
 		}
 		return results;
-	}	
-	
+	}
+
 	$.sortByFirstValue = function(a,b){return b[0]-a[0];};
 	$.intersectResultsArrays = function (result1,result2){
-		intersectedResults = [];
+		var intersectedResults = [];
 		for (var r1 in result1)
 			if(result2[r1]) intersectedResults[r1] = [result1[r1][0]+result2[r1][0], result2[r1][1], result2[r1][2]];
 		return intersectedResults;
@@ -104,16 +121,17 @@ $(document).ready(function(){
 			if(lesser[r]) greater[r][0]+=lesser[r][0];
 		return greater;
 	}
-	
+
 	$.quoteSearch = function(value){
-		while(quotes = value.match(/["'](.*[^"'][ _\-\(\)][^"'].*)["']/))
+		var quotes;
+		while(quotes = value.match(/["'](.*[^"'][^'"a-zA-ZÄÖÜäöüß][^"'].*)["']/))
 			{
-				var terms = quotes[1].split(/[ _\-\(\)]/);
-				value = value.replace(/["'].*[^"'][ _\-\(\)][^"'].*["']/,"'"+terms.join("' '")+"'");
+				var terms = quotes[1].split(/[^'"a-zA-ZÄÖÜäöüß]/);
+				value = value.replace(/["'].*[^"'][^'"a-zA-ZÄÖÜäöüß][^"'].*["']/,"'"+terms.join("' '")+"'");
 			}
-		return value;
+		return value.replace(/''/g,' ').replace(/ +/,' ');
 	};
-	
+
 	$.doubleMetaphoneCheck = function(dm){
 		var result = [];
 		for(var i in terms){
@@ -122,5 +140,5 @@ $(document).ready(function(){
 		}
 		return result;
 	};
-	
+
 })(jQuery);

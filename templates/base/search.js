@@ -14,10 +14,13 @@ $(document).ready(function(){
 });
 
 (function($){
+	$.lang = {
+		no_entries: 'Keine Einträge gefunden.'
+	};
 	$.fn.show_results = function(searchValue){
-		if(searchValue.match(/["'].*[ _\-\(\)].*["']/))
+		if(searchValue.match(/["'].*[^a-zA-ZÄÖÜäöüß].*["']/))
 			searchValue = $.quoteSearch(searchValue);
-		var searchTerms = searchValue.split(/[ _\-\(\)]/);
+		var searchTerms = searchValue.split(/[^a-zA-ZÄÖÜäöüß]/);
 		var results=[];
 		for (var term in searchTerms){
 			if(searchTerms[term].length > 1){
@@ -29,9 +32,15 @@ $(document).ready(function(){
 		}
 		results.sort($.sortByFirstValue);
 		var output = [];
-		while(r = results.shift())
-			output.push('<li><a href="'+rel_path+r[1]+'">'+r[2]+'</a>');
-		this.html('<ol>'+output.join('')+'</ol>');
+		if(results.length){
+			var r;
+			while(r = results.shift())
+				output.push('<li><a href="'+rel_path+r[1]+'">'+r[2]+'</a>');
+			this.html('<ol>'+output.join('')+'</ol>');
+		}
+		else{
+			this.html('<p><strong>'+$.lang.no_entries+'</strong></p>');
+		}
 	};
 	$.getResultsForTerm = function(term){
 		var exact_term = /^["'][^"']+["']$/.test(term);
@@ -72,11 +81,11 @@ $(document).ready(function(){
 			}
 		}
 		return results;
-	}	
-	
+	}
+
 	$.sortByFirstValue = function(a,b){return b[0]-a[0];};
 	$.intersectResultsArrays = function (result1,result2){
-		intersectedResults = [];
+		var intersectedResults = [];
 		for (var r1 in result1)
 			if(result2[r1]) intersectedResults[r1] = [result1[r1][0]+result2[r1][0], result2[r1][1], result2[r1][2]];
 		return intersectedResults;
@@ -86,14 +95,15 @@ $(document).ready(function(){
 			if(lesser[r]) greater[r][0]+=lesser[r][0];
 		return greater;
 	}
-	
+
 	$.quoteSearch = function(value){
-		while(quotes = value.match(/["'](.*[^"'][ _\-\(\)][^"'].*)["']/))
+		var quotes;
+		while(quotes = value.match(/["'](.*[^"'][^'"a-zA-ZÄÖÜäöüß][^"'].*)["']/))
 			{
-				var terms = quotes[1].split(/[ _\-\(\)]/);
-				value = value.replace(/["'].*[^"'][ _\-\(\)][^"'].*["']/,"'"+terms.join("' '")+"'");
+				var terms = quotes[1].split(/[^'"a-zA-ZÄÖÜäöüß]/);
+				value = value.replace(/["'].*[^"'][^'"a-zA-ZÄÖÜäöüß][^"'].*["']/,"'"+terms.join("' '")+"'");
 			}
-		return value;
+		return value.replace(/''/g,' ').replace(/ +/,' ');
 	};
-	
+
 })(jQuery);
