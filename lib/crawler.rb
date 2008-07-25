@@ -50,7 +50,7 @@ class Crawler
           doc = XmlCrawler.new(lines,file,@storage)
         rescue REXML::ParseException
           #as a fallback use hpricot
-          $logger.warn("not valid XHTML- trying to parse as HTML")
+          $logger.debug("not valid XHTML- trying to parse as HTML")
           #convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly
           doc = HpricotCrawler.new(lines.decode_html_entities,file,@storage)
         end
@@ -100,11 +100,14 @@ class Crawler
     
     # splits textblocks and stores terms in the storage. this method splits an all characters that are non aplhpa
     def split_and_store()
+			numbers = '0'..'9'
       get_texts.each do |text_block|
         rank=text_block.semantic_value
-        text_block.to_s.downcase.umlaut_to_downcase.decode_html_entities.split(/[^a-zäöüß]/).each do |term|
-          @storage.store_term(term,rank) unless (term.size < 2 || $stop_words.has_key?(term))
-        end
+				unless (rank.nil?)
+					text_block.to_s.downcase.umlaut_to_downcase.decode_html_entities.split(/[^a-zäöüß0-9]+/).each do |term|
+						@storage.store_term(term,rank) unless ((term.size < 2 && !numbers.include?(term)) || $stop_words.has_key?(term))
+					end
+				end
       end
     end
   end
@@ -163,9 +166,11 @@ class Crawler
         REXML::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
         rank = 1
         node = parent
+				return nil if(node.name == 'script')
         while @@semantic_tags.include?(node.name)
           rank += $config['crawler']['tags'][node.name]
           node = node.parent
+					return nil if(node.name == 'script')
         end
         rank
       end
@@ -218,9 +223,11 @@ class Crawler
         Hpricot::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
         rank = 1
         node = parent
+				return nil if(node.name == 'script')
         while @@semantic_tags.include?(node.name)
           rank += $config['crawler']['tags'][node.name]
           node = node.parent
+					return nil if(node.name == 'script')
         end
         rank
       end

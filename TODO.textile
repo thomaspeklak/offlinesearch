@@ -14,7 +14,6 @@ template
 - mootools template
 - dojo template
 
-- pagination in search
 
 
 test:
@@ -25,7 +24,7 @@ search data
 - implement output encoding of search base => template conversion in correct encoding
 
 entity converter
-- entity converter should be easily extendable - mayby through own config file
+- entity converter should be easily extendable - config file
 
 output
 - enable database support + ajax interface
@@ -35,7 +34,22 @@ crawler
 
 ==============================================================
 
-DOME
+DONE
+version 0.1.9
+- bugfix: escaping quotation marks in page title, would produce errors in js
+
+version 0.1.8
+- bug fix generating search index
+
+version 0.1.6
+- dm enhancments
+	- search_data generator differenciates between dm and non dm generation to minimize the data file
+	- dm template reflects changes in search data file
+- crawler bug fixes (script is not included, numbers are included in index)
+
+version 0.1.5
+- bug fix in template
+
 version 0.1.4
 - major load performance gain of javascript database file due to database reorganization. Less nested arrays gave a huge speed boost 10s -> 0.6s
 - template refactoring

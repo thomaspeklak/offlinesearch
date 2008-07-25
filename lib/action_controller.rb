@@ -25,6 +25,11 @@ class ActionController
     when 'generate_default_config'
       generate_config
     when 'generate_template'
+			unless (['base','base+double_metaphone'].include?($config['template']))
+				$logger.error('Template not found')
+				$logger.info('Available templates: base,base+double_metaphone')
+				exit
+			end
       generate_template
     when 'generate_search'
       verify_search_parameters

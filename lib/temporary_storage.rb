@@ -27,7 +27,7 @@ class Temporary_Storage
   # stores file name, title and page rank.
   # start pagerank with 1 to enable mutliplicatoin pagerank
   def store_file(filename,title,pagerank=1)
-     @storage_handler.store_file(filename,title,pagerank)
+     @storage_handler.store_file(filename.to_s,title.to_s.gsub('"','&quot;'),pagerank)
   end
   
   #stores the term and term rank
