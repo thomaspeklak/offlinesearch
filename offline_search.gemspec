@@ -1,7 +1,7 @@
 require 'rubygems' 
 SPEC = Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
-  s.version = "0.1.9" 
+  s.version = "0.2.0" 
   s.author = "Thomas Peklak" 
   s.email = "thomas.peklak@inode.at" 
   s.homepage = "none yet" 
@@ -19,6 +19,7 @@ SPEC = Gem::Specification.new do |s|
   s.add_dependency("hpricot", ">= 0.6")
   s.add_dependency("Text", ">= 1.1.2")
   s.add_dependency("filefinder", ">= 0.0.4")
+  s.add_dependency("progressbar", ">= 0.0.3")
   s.bindir = 'bin'
   s.executables = ['OfflineSearch']
 end

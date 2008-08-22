@@ -35,6 +35,10 @@ crawler
 ==============================================================
 
 DONE
+version 0.2.0
+- droped REXML because of performance issues
+- changed file read method
+
 version 0.1.9
 - bugfix: escaping quotation marks in page title, would produce errors in js
 

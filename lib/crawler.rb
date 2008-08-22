@@ -12,6 +12,7 @@ require 'hpricot'
 require 'Kconv'
 require 'entity_converter'
 require 'filefinder'
+require 'progressbar'
 
 class Crawler
   attr_writer :resource
@@ -30,6 +31,7 @@ class Crawler
       $logger.error('no files found in directory')
       exit
     end
+		@files_size = @files.length
     @files
   end
 
@@ -37,24 +39,17 @@ class Crawler
   # if the file is a valid XHTML file, the file is processed with REXML otherwise Hpricot is used and a warning is written to the log
   # no value is returned
   def parse_files
+		i = 0
+		pbar = ProgressBar.new('indexing',@files_size)
     @files.each do |file|
       $logger.info("processing #{file}")
-      File.open(file) do |f|
-        lines_array= Array.new
-        while line=f.gets
-          lines_array << line.chomp
-        end
-        lines = lines_array.join(' ')
-        begin
-          #try to parse the html as xml
-          doc = XmlCrawler.new(lines,file,@storage)
-        rescue REXML::ParseException
-          #as a fallback use hpricot
-          $logger.debug("not valid XHTML- trying to parse as HTML")
-          #convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly
-          doc = HpricotCrawler.new(lines.decode_html_entities,file,@storage)
-        end
+      File.open(file,'r') do |f|
+				lines = f.read().gsub("\n",' ').gsub("\r",'')
+				#convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly
+				doc = HpricotCrawler.new(lines.decode_html_entities,file,@storage)
         doc.crawler_and_store
+				i += 1
+				pbar.set(i)
       end
     end
     @storage.calculate_pageranks_from_links
