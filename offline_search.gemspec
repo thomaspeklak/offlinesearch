@@ -1,7 +1,7 @@
 require 'rubygems' 
 SPEC = Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
-  s.version = "0.2.0" 
+  s.version = "0.2.1" 
   s.author = "Thomas Peklak" 
   s.email = "thomas.peklak@inode.at" 
   s.homepage = "none yet" 

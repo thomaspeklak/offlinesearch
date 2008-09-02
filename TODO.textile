@@ -35,6 +35,10 @@ crawler
 ==============================================================
 
 DONE
+version 0.2.1
+  BUGFIX: file dir was not generated correctly after last changes
+- small optimization in crawler
+
 version 0.2.0
 - droped REXML because of performance issues
 - changed file read method

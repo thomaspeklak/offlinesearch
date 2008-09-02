@@ -59,7 +59,7 @@ class Crawler
   def get_stored_files
     @storage.get_files
   end
-  
+
   # returns a hash of the indexed terms with ranks and links to the documents
   def get_terms
     @storage.get_terms
@@ -67,32 +67,33 @@ class Crawler
 
   ###### HELPER METHODS
   private
-  
+
   # This abstract class parses a file and tries to extract semantic information
   class DocCrawler
     # tries to ignore external links an convert internal links
     def resolve_link(link,dir)
-      case 
+			link = File.basename(link)
+      case
         when link =~ /^(http|ftp|mailto)/
           return nil
         when link =~ /^[\/a-zA-Z0-9_-]/
-          return (dir+'/'+link).gsub(/.*#{$config['crawler']['docpath']}/,'')
+          return (File.expand_path(dir+'/'+link)).gsub(@expanded_doc_path,'')
         when link =~ /^\./
-          return (File.expand_path(dir+'/'+link)).gsub(/.*#{$config['crawler']['docpath']}/,'')
+          return (File.expand_path(dir+'/'+link)).gsub(@expanded_doc_path,'')
         else
           return nil
       end
     end
-    
+
     # method invokes other methods to get certain information about the document. These methods are implemented in the child classes
     def crawler_and_store
       @storage.store_file(resolve_link(@file,File.dirname(@file)),get_title)
       @storage.store_link(get_hrefs)
-      split_and_store      
+      split_and_store
     end
 
     private
-    
+
     # splits textblocks and stores terms in the storage. this method splits an all characters that are non aplhpa
     def split_and_store()
 			numbers = '0'..'9'
@@ -106,7 +107,7 @@ class Crawler
       end
     end
   end
-  
+
   # parses valid XHTML documents and extracts information
   class XmlCrawler < DocCrawler
     def initialize(lines,file,storage)
@@ -117,15 +118,16 @@ class Crawler
       rescue REXML::ParseException
         raise
       end
+			@expanded_doc_path = File.expand_path($config['crawler']['docpath'])
     end
-    
+
     private
-    
+
     # extracts and returns the title of the document
     def get_title
       @xml.elements.each('//head//title/text()')
     end
-    
+
     # extracts all texts and returns an array of REXML::Texts if no block is given
     # if a block is given then the texts are passed to it
     def get_texts
@@ -137,7 +139,7 @@ class Crawler
         texts
       end
     end
-    
+
     # returns an array of internal links in the document
     def get_hrefs
       a=@xml.elements.to_a("//a")
@@ -148,14 +150,14 @@ class Crawler
       end
       href
     end
-    
+
     # extends REXML::Text with the functionaliy to extract semantic information
     class REXML::Text
       # stores an array of meaningful tags with their rank value
       def self.store_semantics(tags)
         @@semantic_tags=tags
       end
-      
+
       # extracts the semantic value of a text block
       def semantic_value
         REXML::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
@@ -171,22 +173,23 @@ class Crawler
       end
     end
   end
-  
+
   # parses non valid XHTML documents and extracts information
   class HpricotCrawler < DocCrawler
     def initialize(lines,file,storage)
       @doc = Hpricot(lines)
       @file = file
       @storage = storage
+			@expanded_doc_path = File.expand_path($config['crawler']['docpath'])
     end
-    
+
     private
-    
+
     # extracts and returns the title of the document
     def get_title
       @doc.at('//head/title').inner_text
     end
-    
+
     # extracts all texts and returns an array of REXML::Texts if no block is given
     # if a block is given then the texts are passed to it
     def get_texts
@@ -198,15 +201,18 @@ class Crawler
         texts
       end
     end
-    
+
     # returns an array of internal links in the document
     def get_hrefs
       links = Array.new
-      (@doc/'a[@href]').each { |a| links << resolve_link(a.get_attribute('href'),File.dirname(@file)) }
+      (@doc/'a[@href]').each {|a|
+				href = a[:href]
+				links << resolve_link(a.get_attribute('href'),File.dirname(@file)) unless href[0,1] == '#' || href[0,10] == 'javascript'
+			}
       links
     end
 
-    # extends Hpricot::Text with the functionaliy to extract semantic information    
+    # extends Hpricot::Text with the functionaliy to extract semantic information
     class Hpricot::Text
       # stores an array of meaningful tags with their rank value
       def self.store_semantics(tags)
