@@ -3,31 +3,37 @@ OfflineSearch is a semantic offline search generator. It scans a directory of ht
 
 A frequency file of words can be outputted. This may help to find typos and gives statistical information, that can be used to tweak the stop word list. Maintaining the stop words is crucual to keep the index small. E.g. the index of 11MB of HTML files is about 1.2MB (including double metaphone data and if using a tweaked stop word list)
 
-The double metaphone algorithm can be used to find simlar sounding results if the search did not find any matches. This performs not to well, but an other (better) algorithm was not found that performed well on a large index.
+The double metaphone algorithm can be used to find simlar terms if the search did not find any matches. This performs not to well, but an other (better) algorithm was not found that performed well on a large index.
+
+Default config files, stop word lists and search templates can be generated. Please see the section Usage for details.
+
+The search does not include any boolean logic (OR, NOT, XOR, ...). It always tries to find all specified terms.
+
+REMARK: Currently the search index is always written in UTF-8. Future releases will support other encodings.
 
 ===Executable:
  OfflineSearch
 
 ===Usage:
-OfflineSearch [options]
+  OfflineSearch [options]
     -c, --config=CONFIG_FILE         configuration file for the offline search
-
-Generators
+  
+  Generators
     -g, --generate-default-config    creates a default config file in the current directory
     -w, --generate-default-stopwords creates a default stopword list in the current directory. Language flag is required.
     -t, --generate-template          creates search template files in the current directory
     -o, --generate-search-data       crawler the documents in the given docpath and generates the search data file
-
-Optional arguments
-can also be specified in the config file
-command line arguments will overwrite any given value in the config file
+  
+  Optional arguments
+  can also be specified in the config file
+  command line arguments will overwrite any given value in the config file
     -d, --docpath=DOCPATH            path of the documents
     -f=SEARCH_DATA_FILE              path and name of the search data file
         --search-data-file
     -s=STOPWORD_LIST                 stopword list, if none is specified the default stop word list is used
         --stopword-list
     -l, --language=LANGUAGE          required if you want to generate a default stopword list
-
+  
     -h, --help                       Show this message
 
 ===Config-File example:
@@ -64,3 +70,7 @@ command line arguments will overwrite any given value in the config file
 	  relative_path_to_files: ../docs/
 	  output_frequency_to: frequency.txt
     use_double_metaphone: true
+		
+===Templates===
+
+The shipped templates are very basic, as it is assumed that you integrate the search in your site. The only provide a guidance to how to implement the search on your site.
