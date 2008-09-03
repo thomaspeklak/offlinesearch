@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.email = "thomas.peklak@gmail.com" 
   s.platform = Gem::Platform::RUBY 
   s.summary = "A semantic offline search" 
-  s.files = Dir["{bin,docs,lib,conf,templates}/**/*"]
   s.require_path = "lib"
+  s.files = Dir["{bin,docs,lib,conf,templates}/**/*"]
   s.test_file = "tests/notestsyet.rb" 
   s.has_rdoc = true 
   s.add_dependency("hpricot", ">= 0.6")
