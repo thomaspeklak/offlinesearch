@@ -1,11 +1,11 @@
-Gem::Specification.new do |s| 
+spec = Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
   s.version = "0.2.2" 
   s.author = "Thomas Peklak" 
   s.email = "thomas.peklak@gmail.com" 
   s.platform = Gem::Platform::RUBY 
   s.summary = "A semantic offline search" 
-  s.files = Dir["{bin,docs,lib,conf,templates}/**/*"].to_a
+  s.files = Dir["{bin,docs,lib,conf,templates}/**/*"]
   s.require_path = "lib"
   s.test_file = "tests/notestsyet.rb" 
   s.has_rdoc = true 
