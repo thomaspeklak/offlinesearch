@@ -1,5 +1,5 @@
 ==OfflineSearch
-OfflineSearch is a semantic offline search generator. It scans a directory of html files and generates a javascript search data file. Text fragments are weighted with the tags surronding them. Documents are weighted by the links pointing to them.
+OfflineSearch is a semantic offline search generator. It scans a directory of html files and generates a javascript search data file. This was primarly written for an offline html documentation and this is also the main target group. Of course it can be be useful on small websites, too.
 
 A frequency file of words can be outputted. This may help to find typos and gives statistical information, that can be used to tweak the stop word list. Maintaining the stop words is crucual to keep the index small. E.g. the index of 11MB of HTML files is about 1.2MB (including double metaphone data and if using a tweaked stop word list)
 
