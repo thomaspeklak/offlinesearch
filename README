@@ -1,5 +1,9 @@
 ==OfflineSearch
-OfflineSearch is a semantic offline search generator. It scans a directory of html files and generates a javascript search data file.
+OfflineSearch is a semantic offline search generator. It scans a directory of html files and generates a javascript search data file. Text fragments are weighted with the tags surronding them. Documents are weighted by the links pointing to them.
+
+A frequency file of words can be outputted. This may help to find typos and gives statistical information, that can be used to tweak the stop word list. Maintaining the stop words is crucual to keep the index small. E.g. the index of 11MB of HTML files is about 1.2MB (including double metaphone data and if using a tweaked stop word list)
+
+The double metaphone algorithm can be used to find simlar sounding results if the search did not find any matches. This performs not to well, but an other (better) algorithm was not found that performed well on a large index.
 
 ===Executable:
  OfflineSearch
@@ -36,20 +40,20 @@ command line arguments will overwrite any given value in the config file
 	  exceptions: 
 	  stopwords: 
 	  tags:
-	    title: 60
-	    h1: 40
-	    h2: 25
-	    h3: 18
-	    h4: 13
-	    h5: 11
-	    h6: 9
-	    strong: 7
-	    b: 7
-	    em: 5
-	    i: 5
-	    dt: 9
-	    u: 4
-	    a: 3
+      title: 150
+      h1: 50
+      h2: 25
+      h3: 18
+      h4: 13
+      h5: 11
+      h6: 9
+      strong: 7
+      b: 7
+      em: 5
+      i: 5
+      dt: 9
+      u: 4
+      a: 3
 	logger:
 	  file: STDOUT
 	  level: info
@@ -57,5 +61,6 @@ command line arguments will overwrite any given value in the config file
 	  search_data_file: search_data.js
 	  output_encoding: uft-8
 	  template: base
-	  relative_path_to_files: 
+	  relative_path_to_files: ../docs/
 	  output_frequency_to: frequency.txt
+    use_double_metaphone: true

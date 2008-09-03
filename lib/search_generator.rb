@@ -16,11 +16,11 @@ class SearchGenerator
   
   # generates the search data
   def generate
-    ($config['search_generator']['use_double_matephone'] && $config['search_generator']['use_double_matephone'] == true)? generate_terms_for_dm : generate_terms
+    ($config['search_generator']['use_double_metaphone'] && $config['search_generator']['use_double_metaphone'] == true)? generate_terms_for_dm : generate_terms
     generate_files
     generate_relative_path
     generate_frequency_file if ($config['search_generator']['output_frequency_to'])
-    generate_double_metaphone if ($config['search_generator']['use_double_matephone'] && $config['search_generator']['use_double_matephone'] == true)
+    generate_double_metaphone if ($config['search_generator']['use_double_metaphone'] && $config['search_generator']['use_double_metaphone'] == true)
     cleanup    
   end
   

@@ -14,8 +14,6 @@ template
 - mootools template
 - dojo template
 
-
-
 test:
 - implement unit tests
 	- entity_converter
@@ -31,3 +29,6 @@ output
 
 crawler
 - html finder -> find files through html links
+- crawl through remote files on webserver through http protocol
+	- recursive
+	- filelist
