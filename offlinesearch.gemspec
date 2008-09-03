@@ -1,5 +1,4 @@
-require 'rubygems' 
-SPEC = Gem::Specification.new do |s| 
+Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
   s.version = "0.2.2" 
   s.author = "Thomas Peklak" 
@@ -23,7 +22,3 @@ SPEC = Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables = ['OfflineSearch']
 end
-if $0 == __FILE__ 
-  Gem::manage_gems 
-  Gem::Builder.new(SPEC).build 
-end 
