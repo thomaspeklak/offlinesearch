@@ -7,10 +7,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY 
   s.summary = "A semantic offline search" 
   s.description = ""
-  s.candidates = Dir["{bin,docs,lib,conf,templates}/**/*"].to_a
-  s.files = candidates.delete_if do |item| 
-    item.include?("CVS") || item.include?("rdoc")  || item.include?(".svn") 
-  end 
+  s.files = Dir["{bin,docs,lib,conf,templates}/**/*"].to_a
   s.require_path = "lib"
   s.test_file = "tests/notestsyet.rb" 
   s.has_rdoc = true 
