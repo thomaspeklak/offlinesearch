@@ -4,9 +4,13 @@ Gem::Specification.new do |s|
   s.author = "Thomas Peklak" 
   s.email = "thomas.peklak@gmail.com" 
   s.platform = Gem::Platform::RUBY 
-  s.summary = "A semantic offline search" 
+  s.summary = "A semantic offline search"
+	s.description = "OfflineSearch is a semantic offline search generator. It scans a directory of html files and generates a javascript search data file. This was primarly written for an offline html documentation and this is also the main target group. Of course it can be be useful on small websites, too."
   s.require_path = "lib"
-  s.files =  ["bin/OfflineSearch", "lib/action_controller.rb", "lib/config.yaml", "lib/config_default.yaml", "lib/crawler.rb", "lib/entity_converter.rb", "lib/generate_default_config.rb", "lib/generate_default_stopwords.rb", "lib/generate_default_template.rb", "lib/log_init.rb", "lib/offline_search.rb", "lib/option_parser.rb", "lib/option_validator.rb", "lib/search_generator.rb", "lib/stop_words.rb", "lib/stoplist", "lib/stoplist/english", "lib/stoplist/english/stopwords.txt", "lib/stoplist/german", "lib/stoplist/german/stopwords.txt", "lib/temporary_storage.rb", "templates/base", "templates/base/jquery-1.2.2.min.js", "templates/base/search.css", "templates/base/search.html", "templates/base/search.js", "templates/base+double_metaphone", "templates/base+double_metaphone/jquery-1.2.2.min.js", "templates/base+double_metaphone/jQueryDoubleMetaphone.js", "templates/base+double_metaphone/jQueryDoubleMetaphone.packed.js", "templates/base+double_metaphone/search.css", "templates/base+double_metaphone/search.html", "templates/base+double_metaphone/search.js"]
+  candidates = Dir.glob("{bin,docs,lib,conf,templates}/**/*") 
+  s.files = candidates.delete_if do |item| 
+    item.include?("CVS") || item.include?("rdoc")  || item.include?(".svn") 
+  end 
   s.test_file = "tests/notestsyet.rb" 
   s.has_rdoc = true 
   s.add_dependency("hpricot", ">= 0.6")
