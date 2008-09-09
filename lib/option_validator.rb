@@ -29,6 +29,9 @@ class OptionValidator
       $logger.error('stopwords file does not exist')
       exit
     end
+    unless ($config['crawler'].has_key?('max_semantic_depth'))
+      $config['crawler']['max_semantic_depth']
+    end
     
     unless (directory_exists?($config['crawler']['docpath']))
       $logger.error('docpath does not exist')

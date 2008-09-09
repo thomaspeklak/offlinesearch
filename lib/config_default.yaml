@@ -20,6 +20,7 @@ crawler:
     dt: 9
     u: 4
     a: 3
+  max_semantic_depth: 3
 logger:
   file: STDOUT
   level: info

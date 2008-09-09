@@ -1,4 +1,8 @@
 ____________________________________
+v0.2.3
++ added max_semantic_depth to crawler - the parent tags to a max depth of this value are evaluated to get the semantic value of the current text block
+
+____________________________________
 v0.2.2
 * BUGFIX fixed a typo in config (double matephone => double metaphone)
 + added some information to readme

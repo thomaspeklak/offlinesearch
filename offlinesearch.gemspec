@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
-  s.version = "0.2.2" 
+  s.version = "0.2.3" 
   s.author = "Thomas Peklak" 
   s.email = "thomas.peklak@gmail.com" 
   s.platform = Gem::Platform::RUBY 

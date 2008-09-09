@@ -9,6 +9,8 @@ Default config files, stop word lists and search templates can be generated. Ple
 
 The search does not include any boolean logic (OR, NOT, XOR, ...). It always tries to find all specified terms.
 
+A max semantic depth value can be set in the config file, that determines how many parent nodes shoud add their semantic value to the current node. E.g. h1 > b can have more semantic weight than a single b or h1
+
 REMARK: Currently the search index is always written in UTF-8. Future releases will support other encodings.
 
 ===Executable:
@@ -60,6 +62,7 @@ REMARK: Currently the search index is always written in UTF-8. Future releases w
       dt: 9
       u: 4
       a: 3
+    max_semantic_depth: 3
 	logger:
 	  file: STDOUT
 	  level: info

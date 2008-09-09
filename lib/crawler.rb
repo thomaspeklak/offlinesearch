@@ -222,13 +222,16 @@ class Crawler
       # extracts the semantic value of a text block
       def semantic_value
         Hpricot::Text.store_semantics($config['crawler']['tags'].keys) unless defined?(@@semantic_tags)
+        depth = 0
         rank = 1
         node = parent
 				return nil if(node.name == 'script')
-        while @@semantic_tags.include?(node.name)
+				#navigate through parent tags as long as the contain a semantic value or the current parent is out of the max semantic depth bound
+        while (@@semantic_tags.include?(node.name) && ($config['crawler']['max_semantic_depth'] == 0 || depth < $config['crawler']['max_semantic_depth']))
           rank += $config['crawler']['tags'][node.name]
           node = node.parent
 					return nil if(node.name == 'script')
+					depth += 1
         end
         rank
       end
