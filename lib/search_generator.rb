@@ -80,7 +80,7 @@ class SearchGenerator
   # stores the relative path in a vairable
   def generate_relative_path
     $logger.info("generating relative path")
-    @search_data_file.puts "var rel_path = '#{$config['search_generator']['relative_path_to_files'].gsub(/\/$/,'')}/';" if $config['search_generator'].has_key?('relative_path_to_files')
+    @search_data_file.puts "var rel_path = '#{$config['search_generator']['relative_path_to_files'].gsub(/\/$/,'')}/';" if $config['search_generator'].has_key?('relative_path_to_files')  && $config['search_generator']['relative_path_to_files']
   end
   
   def generate_frequency_file
