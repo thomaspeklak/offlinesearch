@@ -1,4 +1,9 @@
 ____________________________________
+v0.2.4
+* BUGFIX: fixed typo in entity converter
++ added tests for entity converter, option validator and termporary storage
++ FIX: fixed some small issues from testing
+____________________________________
 v0.2.3
 + added max_semantic_depth to crawler - the parent tags to a max depth of this value are evaluated to get the semantic value of the current text block
 * BUGFIX: Error on empty relative_path_to_files in config file fixed. Path is not displayed when empty

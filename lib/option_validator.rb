@@ -21,7 +21,7 @@ class OptionValidator
       $logger.error('storage must be memory or sqlite')
       exit
     end
-    unless($config['crawler']['docs'].size>0)
+    unless($config['crawler']['docs'] && $config['crawler']['docs'].size>0)
       $logger.error('doc types must be specified')
       exit
     end

@@ -15,9 +15,9 @@ class Temporary_Storage
   
   # initializes the storage handler
   def initialize(mode)
-    @storage_handler=case
-      when mode=='sqlite': Sqlite.new('storage.db')
-      when mode=='memory': Memory.new
+    @storage_handler=case mode.downcase
+      when 'sqlite': Sqlite.new('storage.db')
+      when 'memory': Memory.new
       else
         $logger.error("no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory")
         exit
@@ -44,7 +44,7 @@ class Temporary_Storage
   def get_file(filename)
     f=@storage_handler.get_file(filename)
     { 'filename'=>f[0],
-      'titel'=>f[1],
+      'title'=>f[1],
       'pagerank'=>f[2] }
   end
   
@@ -96,7 +96,8 @@ class Temporary_Storage
     end
     
     def get_file(filename)
-      
+      f = @files[filename]
+      [f.name, f.title, f.page_rank]
     end
     
     # returns the files hash
@@ -118,7 +119,7 @@ class Temporary_Storage
     # the page rank equals the number of inbound links or if none 1     
     def calculate_pageranks_from_links
       @links.get_all.each do |link, rank|
-        @files[link].page_rank=rank if @files.has_key?(link)
+        @files[link].page_rank+=rank if @files.has_key?(link)
       end
     end
     
