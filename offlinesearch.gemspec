@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
-  s.version = "0.2.4" 
+  s.version = "0.2.5" 
   s.author = "Thomas Peklak" 
   s.email = "thomas.peklak@gmail.com" 
   s.platform = Gem::Platform::RUBY 
@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.files = candidates.delete_if do |item| 
     item.include?("CVS") || item.include?("rdoc")  || item.include?(".svn") 
   end 
+  s.test_files = Dir["{tests}/test_*.rb"].to_a
   s.has_rdoc = true 
   s.add_dependency("hpricot", ">= 0.6")
   s.add_dependency("Text", ">= 1.1.2")

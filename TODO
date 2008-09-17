@@ -14,10 +14,6 @@ template
 - mootools template
 - dojo template
 
-test:
-- implement unit tests
-	- entity_converter
-
 search data
 - implement output encoding of search base => template conversion in correct encoding
 
@@ -32,3 +28,9 @@ crawler
 - crawl through remote files on webserver through http protocol
 	- recursive
 	- filelist
+
+logger
+- transform to singleton class
+	
+performance optimization
+

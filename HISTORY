@@ -1,3 +1,6 @@
+v0.2.5
++ tests for stopwords
++ optimized entity converter with some metaprogramming
 ____________________________________
 v0.2.4
 * BUGFIX: fixed typo in entity converter
