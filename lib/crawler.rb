@@ -96,12 +96,13 @@ class Crawler
 
     # splits textblocks and stores terms in the storage. this method splits an all characters that are non aplhpa
     def split_and_store()
-			numbers = '0'..'9'
+			@numbers ||= '0'..'9'
+			@splits ||= /[^#{String.html_entities.keys.to_s + "" + @numbers.to_a.to_s + ('a'..'z').to_a.to_s + ('A'..'Z').to_a.to_s}]+/u
       get_texts.each do |text_block|
         rank=text_block.semantic_value
 				unless (rank.nil?)
-					text_block.to_s.downcase.umlaut_to_downcase.decode_html_entities.split(/[^a-zäöüß0-9]+/).each do |term|
-						@storage.store_term(term,rank) unless ((term.size < 2 && !numbers.include?(term)) || $stop_words.has_key?(term))
+					text_block.to_s.downcase.html_entity_downcase.decode_html_entities.split(@splits).each do |term|
+						@storage.store_term(term,rank) unless ((term.size < 2 && !@numbers.include?(term)) || $stop_words.has_key?(term))
 					end
 				end
       end

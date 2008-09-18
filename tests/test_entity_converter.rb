@@ -13,7 +13,7 @@ class TestEntityConverter < Test::Unit::TestCase
     assert_equal "&auml;&ouml;&uuml;&Auml;&Ouml;&Uuml;&szlig;", "äöüÄÖÜß".encode_html_entities
   end
   
-  def test_umlaut_to_downcase
-    assert_equal 'äöüäöüß', 'äöüÄÖÜß'.umlaut_to_downcase
+  def test_entity_to_downcase
+    assert_equal 'äöüäöüß', 'äöüÄÖÜß'.html_entity_downcase
   end
 end

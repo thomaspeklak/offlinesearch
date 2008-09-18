@@ -9,7 +9,7 @@ config:
 - deep config check
 
 template
-
+- update template to be used with utf8 entities
 - prototype template
 - mootools template
 - dojo template
@@ -18,7 +18,8 @@ search data
 - implement output encoding of search base => template conversion in correct encoding
 
 entity converter
-- entity converter should be easily extendable - config file
+- move to seperate gem
+- ascii converter + selection in config, crawler & template
 
 output
 - enable database support + ajax interface
@@ -30,7 +31,7 @@ crawler
 	- filelist
 
 logger
-- transform to singleton class
-	
+- transform to singleton class and move to seperate gem
+
 performance optimization
 
