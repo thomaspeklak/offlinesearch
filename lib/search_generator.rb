@@ -4,13 +4,16 @@
 # * $Rev$
 # * $LastChangedDate$
 #
+require 'rubygems'
+require 'fancylog'
 
 class SearchGenerator
   # needs files and terms and an entry in the config representing the location of the javascript file
   def initialize(files, terms)
+    @l = FancyLog.instance
     @files = files
     @terms = terms
-    $logger.info("writing data to #{$config['search_generator']['search_data_file']}")
+    @l.info("writing data to #{$config['search_generator']['search_data_file']}")
     @search_data_file = File.new($config['search_generator']['search_data_file'],'w')
   end
   
@@ -28,7 +31,7 @@ class SearchGenerator
   # generates a javascript hash of the indexed terms and writes it to the javascript file
   # term => document id, rank
   def generate_terms
-    $logger.info("generating term base")
+    @l.info("generating term base")
     out = Array.new
     out << "var terms = {"
     @terms.each do |term, reference|
@@ -46,7 +49,7 @@ class SearchGenerator
   # generates a javascript hash of the indexed terms and writes it to the javascript file
   # term => document id, rank
   def generate_terms_for_dm
-    $logger.info("generating term base")
+    @l.info("generating term base")
     outTerms = Array.new
     outTerms << "var terms = {"
     out = Array.new
@@ -68,7 +71,7 @@ class SearchGenerator
   
   # generates a javascript hash of file ids => title, file name, pagerank
   def generate_files
-    $logger.info("generating file base")
+    @l.info("generating file base")
     out = Array.new
     out << "var files = {"
     @files.each_value do |f|
@@ -79,12 +82,12 @@ class SearchGenerator
   
   # stores the relative path in a vairable
   def generate_relative_path
-    $logger.info("generating relative path")
+    @l.info("generating relative path")
     @search_data_file.puts "var rel_path = '#{$config['search_generator']['relative_path_to_files'].gsub(/\/$/,'')}/';" if $config['search_generator'].has_key?('relative_path_to_files')  && $config['search_generator']['relative_path_to_files']
   end
   
   def generate_frequency_file
-    $logger.info("generating frequency file")
+    @l.info("generating frequency file")
     File.open($config['search_generator']['output_frequency_to'],'w') do |f|
       @terms.each do |term,reference|
         f.puts "#{term} #{reference.size}"
@@ -94,7 +97,7 @@ class SearchGenerator
   end
 
   def generate_double_metaphone()
-    $logger.info("generating double metaphone data")
+    @l.info("generating double metaphone data")
     require 'Text'
     out = Array.new
     out << 'var dm_data = ['

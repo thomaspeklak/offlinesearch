@@ -13,11 +13,13 @@ require 'Kconv'
 require 'entity_converter'
 require 'filefinder'
 require 'progressbar'
+require 'fancylog'
 
 class Crawler
   attr_writer :resource
   # requires a docpath set in the config file and a temporary storage handler
   def initialize
+    @l = FancyLog.instance
     @resource = $config['crawler']['docpath']
     require "temporary_storage"
     @storage=Temporary_Storage.new($config['storage'])
@@ -28,7 +30,7 @@ class Crawler
   def find_files()
     @files = FileFinder::find(@resource,:types=>$config['crawler']['docs'],:excludes=>$config['crawler']['exceptions'])
     if (@files.empty?)
-      $logger.error('no files found in directory')
+      @l.error('no files found in directory')
       exit
     end
 		@files_size = @files.length
@@ -42,7 +44,7 @@ class Crawler
 		i = 0
 		pbar = ProgressBar.new('indexing',@files_size)
     @files.each do |file|
-      $logger.info("processing #{file}")
+      @l.info("processing #{file}")
       File.open(file,'r') do |f|
 				lines = f.read().gsub("\n",' ').gsub("\r",'')
 				#convert entities before a new Hpricot doc is created, otherwise the entities are not converted correctly

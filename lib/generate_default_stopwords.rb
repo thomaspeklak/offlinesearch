@@ -5,12 +5,13 @@
 # * $Rev$
 # * $LastChangedDate$
 #
+require 'fancylog'
 require 'fileutils'
 include FileUtils
 
 language = ['german','english']
 unless(defined?($config) && language.include?($config['language']))
-  $logger.error('language must be english or german')
+  FancyLog.instance.error('language must be english or german')
   exit
 end
 

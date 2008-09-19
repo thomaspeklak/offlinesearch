@@ -31,7 +31,6 @@ crawler
 	- filelist
 
 logger
-- transform to singleton class and move to seperate gem
 
 performance optimization
 

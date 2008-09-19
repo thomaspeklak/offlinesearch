@@ -6,7 +6,6 @@ require "temporary_storage"
 class TestTemporaryStorage < Test::Unit::TestCase
   def setup
       $config = {'logger'=> { 'file' => STDOUT, 'level' => 'INFO'}}
-      require "log_init"
       @ts = Temporary_Storage.new('memory')
   end
   def test_initialize # (mode)

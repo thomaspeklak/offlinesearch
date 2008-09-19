@@ -4,6 +4,7 @@ v0.2.6
 	- easier to extend
 	- all latin 1 entities included
 	- better flow with crawler
++ changed log to fancy log
 ____________________________________
 v0.2.5
 + tests for stopwords

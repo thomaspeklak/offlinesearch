@@ -5,6 +5,8 @@
 # * $Rev$
 # * $LastChangedDate$
 #
+require 'rubygems'
+require 'fancylog'
 
 class ActionController
   # checks the value of the global variable $action set by option parser
@@ -14,9 +16,9 @@ class ActionController
   # * genrating a template
   # * genrating the search database
   def initialize()
-    require "log_init"
+    setup_logger
     unless defined?($action)
-      $logger.fatal("No action is defined. Please chose one of the following options:\n\t\t-o generate search index\n\t\t-t generate template files\n\t\t-o generate default stop words\n\t\t-g generate default config")
+      @l.fatal("No action is defined. Please chose one of the following options:\n\t\t-o generate search index\n\t\t-t generate template files\n\t\t-o generate default stop words\n\t\t-g generate default config")
       exit
     end
     case $action
@@ -26,8 +28,8 @@ class ActionController
       generate_config
     when 'generate_template'
 			unless (['base','base+double_metaphone'].include?($config['template']))
-				$logger.error('Template not found')
-				$logger.info('Available templates: base,base+double_metaphone')
+				@l.error('Template not found')
+				@l.info('Available templates: base,base+double_metaphone')
 				exit
 			end
       generate_template
@@ -39,15 +41,15 @@ class ActionController
   
   private
   def generate_stopwords
-		$logger.info("generating default stopwords")
+		@l.info("generating default stopwords")
     require 'generate_default_stopwords'
   end
   def generate_config
-		$logger.info("generating default config")
+		@l.info("generating default config")
     require 'generate_default_config'
   end
   def generate_template
-		$logger.info("generating default template")
+		@l.info("generating default template")
     require 'generate_default_template'
     TemplateGenerator.new($config['template'])
   end
@@ -66,5 +68,12 @@ class ActionController
 
     generator = SearchGenerator.new(crawler.get_stored_files, crawler.get_terms)
     generator.generate
+  end
+  
+  private
+  def setup_logger
+    out_level = eval("Logger::#{$config['logger']['level'].upcase}")
+    out_device = ($config['logger']['file'] == 'STDOUT')? STDOUT : $config['logger']['file']
+    @l = FancyLog.setup(:out_level => out_level, :out_device => out_device).instance, :default_level => 'info')
   end
 end

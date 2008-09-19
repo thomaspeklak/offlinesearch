@@ -9,17 +9,20 @@
 # * $Author$
 # * $Rev$
 # * $LastChangedDate$
+require 'rubygems'
+require 'fancylog'
 
 class Temporary_Storage
   attr_reader :storage_handler
   
   # initializes the storage handler
   def initialize(mode)
+    @l = FancyLog.instance
     @storage_handler=case mode.downcase
       when 'sqlite': Sqlite.new('storage.db')
       when 'memory': Memory.new
       else
-        $logger.error("no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory")
+        @l.error("no appropriate stroage is selected\nvalid options:\n\tsqlite\n\tmemory")
         exit
     end
   end

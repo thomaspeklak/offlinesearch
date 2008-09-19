@@ -5,16 +5,17 @@
 # * $LastChangedDate$
 #
 require "YAML"
-
 require 'optparse'
+
 $config = Hash.new
+
 OptionParser.new do |opts|
   opts.banner = "Usage: OfflineSearch [options]"
   opts.on('-c', '--config=CONFIG_FILE', String,'configuration file for the offline search') do |c|
     if (File.exists?(c))
       $config = YAML.load_file(c)
     else
-      $logger.error('config file not found')
+      puts 'config file not found'
       exit      
     end
   end
