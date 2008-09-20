@@ -72,9 +72,9 @@ class String
     '§' => ['&sect;','&#167;']
   }
   
-  { :encode_html_entities => @@html_entities.to_a.inject([]) {|a, x| a << [/#{x[0]}/, x[1][0]] << [/#{x[0]}/, x[1][1]] },
-    :decode_html_entities => @@html_entities.to_a.inject([]) {|a, x| a << [/#{x[1][0]}/, x[0]] << [/#{x[1][1]}/, x[0]] },
-    :html_entity_downcase => @@html_entities.select{|k,v| v.length==3 }.to_a.select.inject([]) {|a,x| a << [/#{x[0]}/, x[1][2]] }
+  { :encode_html_entities => @@html_entities.inject([]) {|a, x| a << [/#{x[0]}/, x[1][0]] << [/#{x[0]}/, x[1][1]] },
+    :decode_html_entities => @@html_entities.inject([]) {|a, x| a << [/#{x[1][0]}/, x[0]] << [/#{x[1][1]}/, x[0]] },
+    :html_entity_downcase => @@html_entities.select{|k,v| v.length==3 }.inject([]) {|a,x| a << [/#{x[0]}/, x[1][2]] }
   }.each do |meth, key_value_pairs|
       translate = Regexp.union(*key_value_pairs.collect { |k,v| k })
       define_method(meth) {
