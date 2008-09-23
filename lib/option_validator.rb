@@ -34,7 +34,7 @@ class OptionValidator
       exit
     end
     unless ($config['crawler'].has_key?('max_semantic_depth'))
-      $config['crawler']['max_semantic_depth']
+      $config['crawler']['max_semantic_depth'] = 3
     end
     
     unless (directory_exists?($config['crawler']['docpath']))
