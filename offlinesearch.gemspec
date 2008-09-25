@@ -1,4 +1,5 @@
-Gem::Specification.new do |s| 
+# TRICKY: spec needs to be global otherwise rake does not load it
+$spec = Gem::Specification.new do |s| 
   s.name = "OfflineSearch" 
   s.version = "0.2.6"
   s.author = "Thomas Peklak" 

@@ -74,13 +74,13 @@ REMARK: Currently the search index is always written in UTF-8. Future releases w
 	  output_frequency_to: frequency.txt
     use_double_metaphone: true
 		
-===Templates===
+===Templates
 
 The shipped templates are very basic, as it is assumed that you integrate the search in your site. The only provide a guidance to how to implement the search on your site.
 
 
 ___________________________________________________________________________
-The MIT License
+==The MIT License
 
 Copyright (c) 2008 Thomas Peklak
 
